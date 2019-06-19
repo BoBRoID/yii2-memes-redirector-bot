@@ -18,14 +18,14 @@ class DefaultController extends Controller
     public function actions(): array
     {
         return [
-            'error' => [
-                'class' =>  ErrorAction::class,
+            'error'     => [
+                'class'     =>  ErrorAction::class,
             ],
-            'hook'  =>  [
-                'class' =>  GetWebHookAction::class
+            'get-hook'  =>  [
+                'class'     =>  GetWebHookAction::class
             ],
-            'set'  =>  [
-                'class' =>  SetWebHookAction::class
+            'set-hook'  =>  [
+                'class'     =>  SetWebHookAction::class
             ]
         ];
     }
