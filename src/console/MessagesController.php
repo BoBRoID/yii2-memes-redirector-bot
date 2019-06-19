@@ -22,7 +22,7 @@ class MessagesController extends Controller
         $currentTimestamp = strtotime(date('Y-m-d H:i:').'00');
         $lastUpdate = ConfigurationHelper::getLastUpdate();
         $delay = ConfigurationHelper::getDelay();
-        $chatId = ConfigurationHelper::getChatId();
+        $chatId = ConfigurationHelper::getChannelId();
         $isSilent = DateTimeHelper::nowIsNight();
 
         if ($isSilent) {

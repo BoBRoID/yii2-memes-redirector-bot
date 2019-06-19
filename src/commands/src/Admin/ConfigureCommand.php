@@ -50,17 +50,41 @@ class ConfigureCommand extends BaseAdminCommand
 
         $chat_id = $message->getChat()->getId();
         $possibleVars = ConfigurationHelper::getChangeableVars();
+        $messageText = $message->getText(true);
 
-        $varsList = implode(', ', $possibleVars);
+        if (empty($messageText)) {
+            $varsList = implode(', ', $possibleVars);
 
-        \Yii::debug($message->getText(true));
+            return Request::sendMessage([
+                'chat_id' => $chat_id,
+                'text'    => "Список доступных переменных для конфигурации: \r\n{$varsList}",
+            ]);
+        }
 
-
+        $params = explode(' ', $messageText);
 
         $data = [
-            'chat_id' => $chat_id,
-            'text'    => "Список доступных переменных для конфигурации: \r\n{$varsList}",
+            'chat_id'               =>  $chat_id,
+            'reply_to_message_id'   =>  $message->getMessageId(),
         ];
+
+        if (sizeof($params) === 1) {
+            return Request::sendMessage($data + ['text'  =>  "Получена переменная `{$params[0]}`, но аргумент куда-то потерялся. Попробуйте ещё раз."]);
+        }
+
+        $varName = array_shift($params);
+
+        if (!in_array($varName, $possibleVars)) {
+            return Request::sendMessage($data + ['text' => "Получена переменная `{$varName}`, но её не существует или нельзя редактировать. Попробуйте ещё раз."]);
+        }
+
+        $value = array_shift($params);
+
+        if (!ConfigurationHelper::set($varName, $value)) {
+            $data['text'] = "Не удалось установить переменной `{$value}` значение `{$value}`!";
+        } else {
+            $data['text'] = "Переменной `{$value}` успешно установлено значение `{$value}`!";
+        }
 
         return Request::sendMessage($data);
     }

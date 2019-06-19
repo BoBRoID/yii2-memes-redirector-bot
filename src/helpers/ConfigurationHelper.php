@@ -54,11 +54,6 @@ class ConfigurationHelper
         return (int)(self::get('nightDelay') ?? 720);
     }
 
-    public static function getChatId(): ?int
-    {
-        return (int)self::get('chatId');
-    }
-
     public static function getLastUpdate(): ?int
     {
         return (int)self::get('lastUpdate');
@@ -76,7 +71,7 @@ class ConfigurationHelper
 
     public static function getChangeableVars(): array
     {
-        return ['delay', 'channelId'];
+        return ['delay', 'nightDelay', 'channelId'];
     }
 
     /**
