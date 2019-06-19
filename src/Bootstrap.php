@@ -21,11 +21,11 @@ class Bootstrap implements BootstrapInterface
             $app->cache->set('webHookUrl', $webHookUrlHash);
         }
 
+        $app->setModule('memesRedirectorBot', Module::class);
+
         $app->urlManager->addRules([
             '/bot/web-hook/set'                     =>  'memesRedirectorBot/default/set-hook',
             "/bot/web-hook/get-{$webHookUrlHash}"   =>  'memesRedirectorBot/default/get-hook'
         ]);
-
-        $app->setModule('memesRedirectorBot', Module::class);
     }
 }
