@@ -46,12 +46,12 @@ class ConfigurationHelper
 
     public static function getDelay(): int
     {
-        return (int)(self::get('delay') ?? 300);
+        return (int)(self::get('delay') ?? 6) * 60;
     }
 
     public static function getNightDelay(): int
     {
-        return (int)(self::get('nightDelay') ?? 720);
+        return (int)(self::get('nightDelay') ?? 12) * 60;
     }
 
     public static function getLastUpdate(): ?int
