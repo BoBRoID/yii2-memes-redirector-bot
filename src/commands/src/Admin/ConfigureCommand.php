@@ -11,7 +11,7 @@
 namespace Longman\TelegramBot\Commands\AdminCommands;
 
 use bobroid\memesRedirectorBot\commands\BaseAdminCommand;
-use bobroid\memesRedirectorBot\models\Configuration;
+use bobroid\memesRedirectorBot\helpers\ConfigurationHelper;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Request;
@@ -50,7 +50,7 @@ class ConfigureCommand extends BaseAdminCommand
 
         $chat_id = $message->getChat()->getId();
 
-        $varsList = implode(', ', Configuration::getEditableVars());
+        $varsList = implode(', ', ConfigurationHelper::getChangeableVars());
 
         $data = [
             'chat_id' => $chat_id,

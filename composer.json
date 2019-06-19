@@ -10,6 +10,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.2",
+        "ext-json": "*",
         "yiisoft/yii2": "~2.0.14",
         "longman/telegram-bot": "0.54.0",
         "php-curl-class/php-curl-class": "8.3.2"
