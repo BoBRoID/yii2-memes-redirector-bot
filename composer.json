@@ -1,0 +1,39 @@
+{
+    "name": "bobroid/yii2-memes-redirector-bot",
+    "type": "yii2-extension",
+    "authors": [
+        {
+            "name": "BoBRoID",
+            "email": "n.gilko@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.2",
+        "yiisoft/yii2": "~2.0.14",
+        "longman/telegram-bot": "0.54.0",
+        "php-curl-class/php-curl-class": "8.3.2"
+    },
+    "config": {
+        "process-timeout": 1800,
+        "fxp-asset": {
+            "enabled": false
+        }
+    },
+    "scripts": {
+        "post-update-cmd": [
+            "php yii migrate --migrationPath=@vendor/bobroid/yii2-memes-redirector-bot/migrations"
+        ],
+        "post-install-cmd": [
+            "php yii migrate --migrationPath=@vendor/bobroid/yii2-memes-redirector-bot/migrations"
+        ]
+    },
+    "extra": {
+        "bootstrap": "bobroid\\memesRedirectorBot\\Bootstrap"
+    },
+    "autoload": {
+        "psr-4": {
+            "bobroid\\memesRedirectorBot\\": "src"
+        }
+    }
+}
