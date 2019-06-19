@@ -37,7 +37,7 @@ class DefaultController extends Controller
      */
     public function beforeAction($action): bool
     {
-        if($action->id == 'hook'){
+        if($action->id == 'get-hook'){
             $this->enableCsrfValidation = false;
         }
 
