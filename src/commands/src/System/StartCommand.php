@@ -2,6 +2,7 @@
 namespace Longman\TelegramBot\Commands\SystemCommands;
 
 use bobroid\memesRedirectorBot\commands\BaseSystemCommand;
+use bobroid\memesRedirectorBot\helpers\ConfigurationHelper;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Request;
 
@@ -39,6 +40,16 @@ class StartCommand extends BaseSystemCommand
     public function execute(){
         $message = $this->getMessage();
         $chat_id = $message->getChat()->getId();
+
+        if (in_array($chat_id, ConfigurationHelper::getAdminsIDs())) {
+            if (!ConfigurationHelper::getChatId()) {
+                return Request::sendMessage([
+                    'chat_id'       =>  $chat_id,
+                    'text'          =>  'Для бота не установлен канал в который будут падать посты! Установите канал используя команду `/configure chatId <id чата>`!',
+                    'parse_mode'    =>  'Markdown'
+                ]);
+            }
+        }
 
         $data = [
             'chat_id'   =>  $chat_id,

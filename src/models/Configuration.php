@@ -47,14 +47,6 @@ class Configuration extends \yii\db\ActiveRecord
     /**
      * @return array
      */
-    public static function getEditableVars(): array
-    {
-        return ['delay'];
-    }
-
-    /**
-     * @return array
-     */
     public static function getAdminsIDs(): array
     {
         return \Yii::$app->params['adminsIDs'] ?? [];

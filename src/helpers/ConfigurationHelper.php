@@ -71,6 +71,20 @@ class ConfigurationHelper
 
     public static function getChangeableVars(): array
     {
-        return ['delay'];
+        return ['delay', 'chatId'];
+    }
+
+    /**
+     * @return array
+     */
+    public static function getAdminsIDs(): array
+    {
+        $ids = \Yii::$app->params['adminsIDs'] ?? [];
+
+        if (!is_array($ids)) {
+            $ids = [$ids];
+        }
+
+        return $ids;
     }
 }

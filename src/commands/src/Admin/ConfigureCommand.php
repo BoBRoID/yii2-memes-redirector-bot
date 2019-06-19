@@ -52,6 +52,11 @@ class ConfigureCommand extends BaseAdminCommand
 
         $varsList = implode(', ', ConfigurationHelper::getChangeableVars());
 
+
+        \Yii::debug($message->getCommand());
+        \Yii::debug($message->getFullCommand());
+        \Yii::debug($message);
+
         $data = [
             'chat_id' => $chat_id,
             'text'    => "Список доступных переменных для конфигурации: \r\n{$varsList}",
