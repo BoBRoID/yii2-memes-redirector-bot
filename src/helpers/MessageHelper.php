@@ -51,6 +51,10 @@ class MessageHelper
             if(\in_array($gif->getMimeType(), self::getAllowedGifMimes())){
                 $dbMessage->animationFileId = $gif->getFileId();
             }
+        } else if ($video = $message->getVideo()) {
+            if (\in_array($video->getMimeType(), self::getAllowedVideoMimes())) {
+                $dbMessage->videoFileId = $gif->getFileId();
+            }
         }
 
         return $dbMessage;
@@ -62,5 +66,10 @@ class MessageHelper
     public static function getAllowedGifMimes(): array
     {
         return ['video/mp4', 'image/gif'];
+    }
+
+    public static function getAllowedVideoMimes(): array
+    {
+        return ['video/mp4'];
     }
 }

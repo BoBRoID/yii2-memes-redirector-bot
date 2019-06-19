@@ -16,6 +16,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $animationFileId
  * @property string $audioFileId
  * @property int $messageId
+ * @property string $videoFileId
  */
 class Message extends \yii\db\ActiveRecord
 {
@@ -23,7 +24,8 @@ class Message extends \yii\db\ActiveRecord
     public const    TYPE_TEXT   = 'text',
                     TYPE_PHOTO  = 'photo',
                     TYPE_AUDIO  = 'audio',
-                    TYPE_GIF    = 'gif';
+                    TYPE_GIF    = 'gif',
+                    TYPE_VIDEO  = 'video';
 
     /**
      * {@inheritdoc}
@@ -55,7 +57,7 @@ class Message extends \yii\db\ActiveRecord
     {
         return [
             [['created', 'isSent', 'messageId'], 'integer'],
-            [['text', 'photoFileId', 'animationFileId', 'audioFileId'], 'string'],
+            [['text', 'photoFileId', 'animationFileId', 'audioFileId', 'videoFileId'], 'string'],
         ];
     }
 
@@ -93,6 +95,10 @@ class Message extends \yii\db\ActiveRecord
             return self::TYPE_PHOTO;
         }
 
+        if (!empty($this->videoFileId)) {
+            return self::TYPE_VIDEO;
+        }
+
         return self::TYPE_TEXT;
     }
 
@@ -110,6 +116,9 @@ class Message extends \yii\db\ActiveRecord
                 break;
             case self::TYPE_PHOTO:
                 return 'sendPhoto';
+                break;
+            case self::TYPE_VIDEO:
+                return 'sendVideo';
                 break;
             case self::TYPE_TEXT:
             default:
@@ -135,6 +144,9 @@ class Message extends \yii\db\ActiveRecord
             case self::TYPE_AUDIO:
                 $data['audio'] = $this->audioFileId;
                 break;
+            case self::TYPE_VIDEO:
+                $data['video'] = $this->videoFileId;
+                break;
             case self::TYPE_TEXT:
                 break;
         }
@@ -143,6 +155,7 @@ class Message extends \yii\db\ActiveRecord
             case self::TYPE_AUDIO:
             case self::TYPE_GIF:
             case self::TYPE_PHOTO:
+            case self::TYPE_VIDEO:
                 if (!empty($this->text)) {
                     $data['caption'] = utf8_decode($this->text);
                 }
