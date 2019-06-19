@@ -66,6 +66,7 @@ class ConfigureCommand extends BaseAdminCommand
         $data = [
             'chat_id'               =>  $chat_id,
             'reply_to_message_id'   =>  $message->getMessageId(),
+            'parse_mode'            =>  'Markdown'
         ];
 
         if (sizeof($params) === 1) {
@@ -81,9 +82,9 @@ class ConfigureCommand extends BaseAdminCommand
         $value = array_shift($params);
 
         if (!ConfigurationHelper::set($varName, $value)) {
-            $data['text'] = "Не удалось установить переменной `{$value}` значение `{$value}`!";
+            $data['text'] = "Не удалось установить переменной `{$varName}` значение `{$value}`!";
         } else {
-            $data['text'] = "Переменной `{$value}` успешно установлено значение `{$value}`!";
+            $data['text'] = "Переменной `{$varName}` успешно установлено значение `{$value}`!";
         }
 
         return Request::sendMessage($data);
