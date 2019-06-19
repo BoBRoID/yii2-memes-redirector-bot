@@ -49,12 +49,13 @@ class ConfigureCommand extends BaseAdminCommand
         $message = $this->getMessage();
 
         $chat_id = $message->getChat()->getId();
+        $possibleVars = ConfigurationHelper::getChangeableVars();
 
-        $varsList = implode(', ', ConfigurationHelper::getChangeableVars());
+        $varsList = implode(', ', $possibleVars);
 
-
-        \Yii::debug($message->getCommand());
         \Yii::debug($message->getText(true));
+
+
 
         $data = [
             'chat_id' => $chat_id,

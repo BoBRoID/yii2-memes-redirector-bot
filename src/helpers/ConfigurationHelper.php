@@ -69,9 +69,14 @@ class ConfigurationHelper
         return self::set('lastUpdate', $timestamp);
     }
 
+    public static function getChannelId(): ?int
+    {
+        return (int)self::get('channelId');
+    }
+
     public static function getChangeableVars(): array
     {
-        return ['delay', 'chatId'];
+        return ['delay', 'channelId'];
     }
 
     /**

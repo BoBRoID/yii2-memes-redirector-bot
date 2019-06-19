@@ -42,10 +42,10 @@ class StartCommand extends BaseSystemCommand
         $chat_id = $message->getChat()->getId();
 
         if (in_array($chat_id, ConfigurationHelper::getAdminsIDs())) {
-            if (!ConfigurationHelper::getChatId()) {
+            if (!ConfigurationHelper::getChannelId()) {
                 return Request::sendMessage([
                     'chat_id'       =>  $chat_id,
-                    'text'          =>  'Для бота не установлен канал в который будут падать посты! Установите канал используя команду `/configure chatId <id чата>`!',
+                    'text'          =>  'Для бота не установлен канал в который будут падать посты! Установите канал используя команду `/configure channelId <id чата>`!',
                     'parse_mode'    =>  'Markdown'
                 ]);
             }
