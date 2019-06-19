@@ -51,9 +51,11 @@ class MessageHelper
             if(\in_array($gif->getMimeType(), self::getAllowedGifMimes())){
                 $dbMessage->animationFileId = $gif->getFileId();
             }
-        } else if ($video = $message->getVideo()) {
+        }
+
+        if ($video = $message->getVideo()) {
             if (\in_array($video->getMimeType(), self::getAllowedVideoMimes())) {
-                $dbMessage->videoFileId = $gif->getFileId();
+                $dbMessage->videoFileId = $video->getFileId();
             }
         }
 
