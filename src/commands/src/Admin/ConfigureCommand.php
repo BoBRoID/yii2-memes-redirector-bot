@@ -54,8 +54,7 @@ class ConfigureCommand extends BaseAdminCommand
 
 
         \Yii::debug($message->getCommand());
-        \Yii::debug($message->getFullCommand());
-        \Yii::debug($message);
+        \Yii::debug($message->getText(true));
 
         $data = [
             'chat_id' => $chat_id,
