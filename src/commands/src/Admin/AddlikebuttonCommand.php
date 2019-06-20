@@ -1,8 +1,6 @@
 <?php
 
-
-namespace bobroid\memesRedirectorBot\commands\src\Admin;
-
+namespace Longman\TelegramBot\Commands\AdminCommands;
 
 use bobroid\memesRedirectorBot\helpers\KeyboardHelper;
 use bobroid\memesRedirectorBot\keyboards\InlineKeyboardList;
