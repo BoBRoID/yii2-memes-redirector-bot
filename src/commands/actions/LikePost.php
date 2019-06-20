@@ -6,9 +6,8 @@
  * Time: 18:31
  */
 
-namespace tg\bot\Actions;
+namespace bobroid\memesRedirectorBot\commands\actions;
 
-use bobroid\memesRedirectorBot\commands\actions\BaseAction;
 use Longman\TelegramBot\Entities\ServerResponse;
 
 class LikePost extends BaseAction

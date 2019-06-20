@@ -64,7 +64,7 @@ class CallbackqueryCommand extends BaseSystemCommand
         $callback_query    = $update->getCallbackQuery();
         $callback_query_id = $callback_query->getId();
 
-        $calledAction = 'tg\bot\Actions\\'.ucfirst($callbackData->action);
+        $calledAction = 'bobroid\memesRedirectorBot\commands\actions\\'.ucfirst($callbackData->action);
 
         if(class_exists($calledAction)){
             /**
