@@ -5,14 +5,18 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `messages`.
  */
-class m180926_211833_add_videoFileId_field_to_messages_table extends Migration
+class m180926_211834_add_columns_to_messages_table extends Migration
 {
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        $this->addColumn('messages', 'videoFileId', $this->text());
+        $int = $this->integer()->unsigned()->notNull()->defaultValue(0);
+
+        $this->addColumn('messages', 'likesCount', $int);
+        $this->addColumn('messages', 'dislikesCount', $int);
+        $this->addColumn('messages', 'useKeyboardId', $int);
     }
 
     /**
@@ -20,6 +24,8 @@ class m180926_211833_add_videoFileId_field_to_messages_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropColumn('messages', 'videoFileId');
+        $this->dropColumn('messages', 'likesCount');
+        $this->dropColumn('messages', 'dislikesCount');
+        $this->dropColumn('messages', 'useKeyboardId');
     }
 }

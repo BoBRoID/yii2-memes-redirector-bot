@@ -61,16 +61,16 @@ class WhennextCommand extends BaseAdminCommand
             $lastUpdate = ConfigurationHelper::getLastUpdate();
 
             if (empty($lastUpdate)) {
-                $data['text'] = \Yii::t('app', 'Следующий пост будет в течении минуты');
+                $data['text'] = \Yii::t('tg-posts-redirector', 'Следующий пост будет в течении минуты');
             } else {
                 $delay = ConfigurationHelper::getDelay();
 
-                $data['text'] = \Yii::t('app', 'Следующий пост будет {time}', [
+                $data['text'] = \Yii::t('tg-posts-redirector', 'Следующий пост будет {time}', [
                     'time'  =>  \Yii::$app->formatter->asRelativeTime($lastUpdate + $delay)
                 ]);
             }
         } else {
-            $data['text'] = \Yii::t('app', 'Постов нет, нужно добавить. Как добавите так и приходите');
+            $data['text'] = \Yii::t('tg-posts-redirector', 'Постов нет, нужно добавить. Как добавите так и приходите');
         }
 
         return Request::sendMessage($data);

@@ -45,8 +45,8 @@ class HelpCommand extends BaseUserCommand
 
     public function __construct(Telegram $telegram, Update $update = null)
     {
-        $this->description = Yii::t('app', 'Показывает доступные команды, и их описание');
-        $this->usage = Yii::t('app', '/help или /help <команда>');
+        $this->description = Yii::t('tg-posts-redirector', 'Показывает доступные команды, и их описание');
+        $this->usage = Yii::t('tg-posts-redirector', '/help или /help <команда>');
 
         parent::__construct($telegram, $update);
     }
@@ -76,7 +76,7 @@ class HelpCommand extends BaseUserCommand
         if ($command === '') {
             $text = sprintf(
                 '%s '.PHP_EOL.
-                Yii::t('app', 'Список команд:') . PHP_EOL,
+                Yii::t('tg-posts-redirector', 'Список команд:') . PHP_EOL,
                 $this->telegram->getBotUsername()
             );
 
@@ -88,20 +88,20 @@ class HelpCommand extends BaseUserCommand
                 );
             }
 
-            $text .= PHP_EOL . Yii::t('app', 'Для того, чтобы узнать подробнее о команде, напишите /help <команда>');
+            $text .= PHP_EOL . Yii::t('tg-posts-redirector', 'Для того, чтобы узнать подробнее о команде, напишите /help <команда>');
         }else{
             $command = str_replace('/', '', $command);
 
             if(array_key_exists($command, $command_objs)){
                 $command_obj = $command_objs[$command];
-                $text = Yii::t('app', 'Команда: {command}{br}Описание: {description}{br}Использование: {usage}', [
+                $text = Yii::t('tg-posts-redirector', 'Команда: {command}{br}Описание: {description}{br}Использование: {usage}', [
                     'command'       =>  $command_obj->getName(),
                     'description'   =>  $command_obj->getDescription(),
                     'usage'         =>  $command_obj->getUsage(),
                     'br'            =>  PHP_EOL
                 ]);
             }else{
-                $text = Yii::t('app', 'Нет подсказок для команды {command}, так как команда не найдена', [
+                $text = Yii::t('tg-posts-redirector', 'Нет подсказок для команды {command}, так как команда не найдена', [
                     'command'   =>  $command
                 ]);
             }

@@ -2,6 +2,10 @@
 
 namespace bobroid\memesRedirectorBot\models;
 
+use bobroid\memesRedirectorBot\helpers\KeyboardHelper;
+use bobroid\memesRedirectorBot\keyboards\InlineKeyboardList;
+use Longman\TelegramBot\Entities\InlineKeyboardButton;
+use Longman\TelegramBot\Exception\TelegramException;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -17,6 +21,9 @@ use yii\behaviors\TimestampBehavior;
  * @property string $audioFileId
  * @property int $messageId
  * @property string $videoFileId
+ * @property int    $likesCount
+ * @property int    $dislikesCount
+ * @property int    $useKeyboardId
  */
 class Message extends \yii\db\ActiveRecord
 {
@@ -26,6 +33,9 @@ class Message extends \yii\db\ActiveRecord
                     TYPE_AUDIO = 'audio',
                     TYPE_GIF = 'gif',
                     TYPE_VIDEO = 'video';
+
+    public const    KEYBOARD_ID_LIKE = 1,
+                    KEYBOARD_ID_DISLIKE = 2;
 
     /**
      * {@inheritdoc}
@@ -61,7 +71,7 @@ class Message extends \yii\db\ActiveRecord
     public function rules(): array
     {
         return [
-            [['created', 'isSent', 'messageId'], 'integer'],
+            [['created', 'isSent', 'messageId', 'likesCount', 'dislikesCount', 'useKeyboardId'], 'integer'],
             [['text', 'photoFileId', 'animationFileId', 'audioFileId', 'videoFileId'], 'string'],
         ];
     }
@@ -134,6 +144,7 @@ class Message extends \yii\db\ActiveRecord
 
     /**
      * @return array
+     * @throws TelegramException
      */
     public function getTelegramData(): array
     {
@@ -168,6 +179,20 @@ class Message extends \yii\db\ActiveRecord
             case self::TYPE_TEXT:
                 $data['text'] = utf8_decode($this->text);
                 break;
+        }
+
+        if ($this->useKeyboardId) {
+            $keyboardButtons = [];
+
+            switch ($this->useKeyboardId) {
+                case self::KEYBOARD_ID_DISLIKE:
+                    $keyboardButtons[] = KeyboardHelper::getDislikeButton($this->id);
+                case self::KEYBOARD_ID_LIKE:
+                    $keyboardButtons[] = KeyboardHelper::getLikeButton($this->id);
+                    break;
+            }
+
+            $data['reply_markup'] = new InlineKeyboardList($keyboardButtons);
         }
 
         return $data;
