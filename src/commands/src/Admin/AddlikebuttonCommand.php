@@ -45,10 +45,17 @@ class AddlikebuttonCommand extends AdminCommand
         $message = $this->getMessage();
         $chat_id = $message->getChat()->getId();
 
-        \Yii::debug($message->toJson());
-        \Yii::debug($message->getReplyToMessage()->toJson());
+        $replyMessage = $message->getReplyToMessage();
 
-        $dbMessage = Message::findOne(['messageId' => $message->getMessageId()]);
+        if (empty($replyMessage)) {
+            return Request::sendMessage([
+                'chat_id'               =>  $chat_id,
+                'reply_to_message_id'   =>  $message->getMessageId(),
+                'text'                  =>  \Yii::t('tg-posts-redirector', 'Нужно прислать в ответе пост к которому хочешь прицепить кнопку!')
+            ]);
+        }
+
+        $dbMessage = Message::findOne(['messageId' => $replyMessage->getMessageId()]);
 
         if (!$dbMessage) {
             return Request::sendMessage([
@@ -63,7 +70,7 @@ class AddlikebuttonCommand extends AdminCommand
             $dbMessage->save(false);
         } else {
             Request::editMessageReplyMarkup([
-                'message_id'    =>  $message->getMessageId(),
+                'message_id'    =>  $dbMessage->messageId,
                 'reply_markup'  =>  new InlineKeyboardList([KeyboardHelper::getLikeButton($dbMessage->id)])
             ]);
         }
