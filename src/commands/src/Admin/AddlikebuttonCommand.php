@@ -65,12 +65,14 @@ class AddlikebuttonCommand extends AdminCommand
             ]);
         }
 
-        if (!$dbMessage->isSent) {
-            $dbMessage->useKeyboardId = $dbMessage::KEYBOARD_ID_LIKE;
-            $dbMessage->save(false);
-        } else {
+
+        $dbMessage->useKeyboardId = $dbMessage::KEYBOARD_ID_LIKE;
+        $dbMessage->save(false);
+
+        if ($dbMessage->isSent) {
             Request::editMessageReplyMarkup([
                 'message_id'    =>  $dbMessage->messageId,
+                'chat_id'       =>  $chat_id,
                 'reply_markup'  =>  new InlineKeyboardList([KeyboardHelper::getLikeButton($dbMessage->id)])
             ]);
         }
