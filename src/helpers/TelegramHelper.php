@@ -26,7 +26,9 @@ class TelegramHelper
         try {
             $curl = new Curl();
             $curl->setHeader('Content-Type', 'application/json');
-            $curl->post($url, json_encode($data));
+            $res = $curl->post($url, json_encode($data));
+
+            var_dump($res);
         } catch (\ErrorException $e) {
             return false;
         }
