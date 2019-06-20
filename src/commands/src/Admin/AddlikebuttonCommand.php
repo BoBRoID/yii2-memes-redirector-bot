@@ -72,7 +72,7 @@ class AddlikebuttonCommand extends AdminCommand
 
         if ($dbMessage->isSent) {
             Request::editMessageReplyMarkup([
-                'message_id'    =>  $dbMessage->messageId,
+                'message_id'    =>  $dbMessage->postedMessageId,
                 'chat_id'       =>  ConfigurationHelper::getChannelId(),
                 'reply_markup'  =>  new InlineKeyboardList([KeyboardHelper::getLikeButton($dbMessage->id)])
             ]);

@@ -12,11 +12,15 @@ use bobroid\memesRedirectorBot\helpers\ConfigurationHelper;
 use bobroid\memesRedirectorBot\helpers\DateTimeHelper;
 use bobroid\memesRedirectorBot\helpers\TelegramHelper;
 use bobroid\memesRedirectorBot\models\Message;
+use Longman\TelegramBot\Exception\TelegramException;
 use yii\console\Controller;
 
 class MessagesController extends Controller
 {
 
+    /**
+     * @throws TelegramException
+     */
     public function actionSend()
     {
         $currentTimestamp = strtotime(date('Y-m-d H:i:').'00');
@@ -48,8 +52,9 @@ class MessagesController extends Controller
             'disable_notification' => $isSilent ? 'true' : 'false'
         ], $message->getTelegramData());
 
-        if (TelegramHelper::sendRequest($message->getTelegramMethod(), $data)) {
+        if ($response = TelegramHelper::sendRequest($message->getTelegramMethod(), $data)) {
             $message->isSent = 1;
+            $message->postedMessageId = $response->result->messageId;
             $message->save();
 
             ConfigurationHelper::setLastUpdate($currentTimestamp);

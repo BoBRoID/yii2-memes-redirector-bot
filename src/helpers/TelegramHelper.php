@@ -16,9 +16,9 @@ class TelegramHelper
     /**
      * @param string $methodName
      * @param array $data
-     * @return bool
+     * @return \stdClass|null
      */
-    public static function sendRequest(string $methodName, array $data): bool
+    public static function sendRequest(string $methodName, array $data): ?\stdClass
     {
         $botKey = \Yii::$app->params['apiKey'];
         $url = "https://api.telegram.org/bot{$botKey}/{$methodName}";
@@ -26,14 +26,10 @@ class TelegramHelper
         try {
             $curl = new Curl();
             $curl->setHeader('Content-Type', 'application/json');
-            $res = $curl->post($url, json_encode($data));
-
-            var_dump($res);
+            return $curl->post($url, json_encode($data));
         } catch (\ErrorException $e) {
-            return false;
+            return null;
         }
-
-        return true;
     }
 
     /**
@@ -42,6 +38,6 @@ class TelegramHelper
      */
     public static function sendMessage(array $data): bool
     {
-        return self::sendRequest('sendMessage', $data);
+        return self::sendRequest('sendMessage', $data) !== null;
     }
 }

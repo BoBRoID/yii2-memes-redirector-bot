@@ -4,10 +4,9 @@ namespace bobroid\memesRedirectorBot\models;
 
 use bobroid\memesRedirectorBot\helpers\KeyboardHelper;
 use bobroid\memesRedirectorBot\keyboards\InlineKeyboardList;
-use Longman\TelegramBot\Entities\InlineKeyboardButton;
 use Longman\TelegramBot\Exception\TelegramException;
-use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "messages".
@@ -24,8 +23,9 @@ use yii\behaviors\TimestampBehavior;
  * @property int    $likesCount
  * @property int    $dislikesCount
  * @property int    $useKeyboardId
+ * @property int    $postedMessageId
  */
-class Message extends \yii\db\ActiveRecord
+class Message extends ActiveRecord
 {
 
     public const    TYPE_TEXT = 'text',
@@ -71,7 +71,7 @@ class Message extends \yii\db\ActiveRecord
     public function rules(): array
     {
         return [
-            [['created', 'isSent', 'messageId', 'likesCount', 'dislikesCount', 'useKeyboardId'], 'integer'],
+            [['created', 'isSent', 'messageId', 'likesCount', 'dislikesCount', 'useKeyboardId', 'postedMessageId'], 'integer'],
             [['text', 'photoFileId', 'animationFileId', 'audioFileId', 'videoFileId'], 'string'],
         ];
     }
