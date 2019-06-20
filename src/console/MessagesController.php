@@ -54,7 +54,7 @@ class MessagesController extends Controller
 
         if ($response = TelegramHelper::sendRequest($message->getTelegramMethod(), $data)) {
             $message->isSent = 1;
-            $message->postedMessageId = $response->result->messageId;
+            $message->postedMessageId = $response && $response->result && $response->result->message_id ? $response->result->message_id : null;
             $message->save();
 
             ConfigurationHelper::setLastUpdate($currentTimestamp);
