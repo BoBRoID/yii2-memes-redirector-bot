@@ -55,6 +55,17 @@ class MessagesController extends Controller
             ConfigurationHelper::setLastUpdate($currentTimestamp);
         }
 
+        $messagesLeft = $message = Message::getCountOfNotSent();
+
+        if ($messagesLeft === 0) {
+            foreach (ConfigurationHelper::getAdminsIDs() as $adminID) {
+                TelegramHelper::sendMessage([
+                    'chat_id'   =>  $adminID,
+                    'text'      =>  'Только что в канал был отправлен последний пост.'
+                ]);
+            }
+        }
+
         return;
     }
 }

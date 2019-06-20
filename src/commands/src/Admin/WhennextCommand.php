@@ -10,28 +10,29 @@
 
 namespace Longman\TelegramBot\Commands\AdminCommands;
 
+use bobroid\memesRedirectorBot\helpers\ConfigurationHelper;
 use bobroid\memesRedirectorBot\models\Message;
 use bobroid\memesRedirectorBot\commands\BaseAdminCommand;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Request;
 
-class QueuesizeCommand extends BaseAdminCommand
+class WhennextCommand extends BaseAdminCommand
 {
     /**
      * @var string
      */
-    protected $name = 'queueSize';
+    protected $name = 'whenNext';
 
     /**
      * @var string
      */
-    protected $description = 'Сколько постов в очереди';
+    protected $description = 'когда следующий пост упадёт в канал';
 
     /**
      * @var string
      */
-    protected $usage = '/queueSize';
+    protected $usage = '/whenNext';
 
     /**
      * @var string
@@ -54,8 +55,23 @@ class QueuesizeCommand extends BaseAdminCommand
 
         $data = [
             'chat_id' => $chat_id,
-            'text'    => "Memes left: {$count}",
         ];
+
+        if ($count !== 0) {
+            $lastUpdate = ConfigurationHelper::getLastUpdate();
+
+            if (empty($lastUpdate)) {
+                $data['text'] = \Yii::t('app', 'Следующий пост будет в течении минуты');
+            } else {
+                $delay = ConfigurationHelper::getDelay();
+
+                $data['text'] = \Yii::t('app', 'Следующий пост будет через {time}', [
+                    'time'  =>  \Yii::$app->formatter->asRelativeTime($lastUpdate + $delay)
+                ]);
+            }
+        } else {
+            $data['text'] = \Yii::t('app', 'Постов нет, нужно добавить. Как добавите так и приходите');
+        }
 
         return Request::sendMessage($data);
     }

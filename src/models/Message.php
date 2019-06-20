@@ -21,11 +21,11 @@ use yii\behaviors\TimestampBehavior;
 class Message extends \yii\db\ActiveRecord
 {
 
-    public const    TYPE_TEXT   = 'text',
-                    TYPE_PHOTO  = 'photo',
-                    TYPE_AUDIO  = 'audio',
-                    TYPE_GIF    = 'gif',
-                    TYPE_VIDEO  = 'video';
+    public const    TYPE_TEXT = 'text',
+        TYPE_PHOTO = 'photo',
+        TYPE_AUDIO = 'audio',
+        TYPE_GIF = 'gif',
+        TYPE_VIDEO = 'video';
 
     /**
      * {@inheritdoc}
@@ -33,6 +33,11 @@ class Message extends \yii\db\ActiveRecord
     public static function tableName(): string
     {
         return 'messages';
+    }
+
+    public static function getCountOfNotSent(): int
+    {
+        return self::find()->where(['isSent' => 0])->count();
     }
 
     /**

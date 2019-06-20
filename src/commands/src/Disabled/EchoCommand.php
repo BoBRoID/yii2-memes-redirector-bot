@@ -8,53 +8,61 @@
  * file that was distributed with this source code.
  */
 
-namespace Longman\TelegramBot\Commands\AdminCommands;
+namespace Longman\TelegramBot\Commands\UserCommands;
 
-use bobroid\memesRedirectorBot\models\Message;
-use bobroid\memesRedirectorBot\commands\BaseAdminCommand;
-use Longman\TelegramBot\Entities\ServerResponse;
+use bobroid\memesRedirectorBot\commands\BaseUserCommand;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Request;
 
-class QueuesizeCommand extends BaseAdminCommand
+/**
+ * User "/echo" command
+ */
+class EchoCommand extends BaseUserCommand
 {
     /**
      * @var string
      */
-    protected $name = 'queueSize';
+    protected $name = 'echo';
 
     /**
      * @var string
      */
-    protected $description = 'Сколько постов в очереди';
+    protected $description = 'Show text';
 
     /**
      * @var string
      */
-    protected $usage = '/queueSize';
+    protected $usage = '/echo <text>';
 
     /**
      * @var string
      */
-    protected $version = '1.0';
+    protected $version = '1.1.0';
+
+    /**
+     * @var bool
+     */
+    protected $enabled = false;
 
     /**
      * Command execute method
      *
-     * @return ServerResponse
+     * @return mixed
      * @throws TelegramException
      */
     public function execute()
     {
         $message = $this->getMessage();
-
         $chat_id = $message->getChat()->getId();
+        $text    = trim($message->getText(true));
 
-        $count = Message::getCountOfNotSent();
+        if ($text === '') {
+            $text = 'Command usage: ' . $this->getUsage();
+        }
 
         $data = [
             'chat_id' => $chat_id,
-            'text'    => "Memes left: {$count}",
+            'text'    => $text,
         ];
 
         return Request::sendMessage($data);
