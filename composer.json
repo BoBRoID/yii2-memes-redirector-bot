@@ -21,14 +21,6 @@
             "enabled": false
         }
     },
-    "scripts": {
-        "post-update-cmd": [
-            "php yii migrate --migrationPath=vendor/bobroid/yii2-memes-redirector-bot/migrations --interactive=0"
-        ],
-        "post-install-cmd": [
-            "php yii migrate --migrationPath=vendor/bobroid/yii2-memes-redirector-bot/migrations --interactive=0"
-        ]
-    },
     "extra": {
         "bootstrap": "bobroid\\memesRedirectorBot\\Bootstrap"
     },

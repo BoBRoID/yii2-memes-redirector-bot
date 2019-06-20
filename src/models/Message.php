@@ -22,10 +22,10 @@ class Message extends \yii\db\ActiveRecord
 {
 
     public const    TYPE_TEXT = 'text',
-        TYPE_PHOTO = 'photo',
-        TYPE_AUDIO = 'audio',
-        TYPE_GIF = 'gif',
-        TYPE_VIDEO = 'video';
+                    TYPE_PHOTO = 'photo',
+                    TYPE_AUDIO = 'audio',
+                    TYPE_GIF = 'gif',
+                    TYPE_VIDEO = 'video';
 
     /**
      * {@inheritdoc}

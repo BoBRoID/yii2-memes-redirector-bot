@@ -65,7 +65,7 @@ class WhennextCommand extends BaseAdminCommand
             } else {
                 $delay = ConfigurationHelper::getDelay();
 
-                $data['text'] = \Yii::t('app', 'Следующий пост будет через {time}', [
+                $data['text'] = \Yii::t('app', 'Следующий пост будет {time}', [
                     'time'  =>  \Yii::$app->formatter->asRelativeTime($lastUpdate + $delay)
                 ]);
             }
