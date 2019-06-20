@@ -45,7 +45,8 @@ class AddlikebuttonCommand extends AdminCommand
         $message = $this->getMessage();
         $chat_id = $message->getChat()->getId();
 
-        \Yii::debug($message);
+        \Yii::debug($message->toJson());
+        \Yii::debug($message->getReplyToMessage()->toJson());
 
         $dbMessage = Message::findOne(['messageId' => $message->getMessageId()]);
 
