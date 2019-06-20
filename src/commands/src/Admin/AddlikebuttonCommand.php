@@ -2,6 +2,7 @@
 
 namespace Longman\TelegramBot\Commands\AdminCommands;
 
+use bobroid\memesRedirectorBot\helpers\ConfigurationHelper;
 use bobroid\memesRedirectorBot\helpers\KeyboardHelper;
 use bobroid\memesRedirectorBot\keyboards\InlineKeyboardList;
 use bobroid\memesRedirectorBot\models\Message;
@@ -72,7 +73,7 @@ class AddlikebuttonCommand extends AdminCommand
         if ($dbMessage->isSent) {
             Request::editMessageReplyMarkup([
                 'message_id'    =>  $dbMessage->messageId,
-                'chat_id'       =>  $chat_id,
+                'chat_id'       =>  ConfigurationHelper::getChannelId(),
                 'reply_markup'  =>  new InlineKeyboardList([KeyboardHelper::getLikeButton($dbMessage->id)])
             ]);
         }
