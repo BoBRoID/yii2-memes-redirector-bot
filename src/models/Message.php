@@ -211,9 +211,9 @@ class Message extends ActiveRecord
 
         switch ($this->useKeyboardId) {
             case self::KEYBOARD_ID_DISLIKE:
-                $keyboardButtons[] = KeyboardHelper::getDislikeButton($this->id);
+                $keyboardButtons[] = KeyboardHelper::getDislikeButton($this->id, $this->dislikesCount);
             case self::KEYBOARD_ID_LIKE:
-                $keyboardButtons[] = KeyboardHelper::getLikeButton($this->id);
+                $keyboardButtons[] = KeyboardHelper::getLikeButton($this->id, $this->likesCount);
                 break;
         }
 
