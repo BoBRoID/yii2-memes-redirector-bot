@@ -182,19 +182,32 @@ class Message extends ActiveRecord
         }
 
         if ($this->useKeyboardId) {
-            $keyboardButtons = [];
-
-            switch ($this->useKeyboardId) {
-                case self::KEYBOARD_ID_DISLIKE:
-                    $keyboardButtons[] = KeyboardHelper::getDislikeButton($this->id);
-                case self::KEYBOARD_ID_LIKE:
-                    $keyboardButtons[] = KeyboardHelper::getLikeButton($this->id);
-                    break;
-            }
-
-            $data['reply_markup'] = new InlineKeyboardList($keyboardButtons);
+            $data['reply_markup'] = $this->getUsingKeyboard();
         }
 
         return $data;
+    }
+
+    /**
+     * @return InlineKeyboardList
+     * @throws TelegramException
+     */
+    public function getUsingKeyboard(): ?InlineKeyboardList
+    {
+        if (!$this->useKeyboardId) {
+            return null;
+        }
+
+        $keyboardButtons = [];
+
+        switch ($this->useKeyboardId) {
+            case self::KEYBOARD_ID_DISLIKE:
+                $keyboardButtons[] = KeyboardHelper::getDislikeButton($this->id);
+            case self::KEYBOARD_ID_LIKE:
+                $keyboardButtons[] = KeyboardHelper::getLikeButton($this->id);
+                break;
+        }
+
+        return new InlineKeyboardList($keyboardButtons);
     }
 }

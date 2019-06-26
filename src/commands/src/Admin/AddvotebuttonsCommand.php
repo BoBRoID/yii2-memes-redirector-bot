@@ -3,8 +3,6 @@
 namespace Longman\TelegramBot\Commands\AdminCommands;
 
 use bobroid\memesRedirectorBot\helpers\ConfigurationHelper;
-use bobroid\memesRedirectorBot\helpers\KeyboardHelper;
-use bobroid\memesRedirectorBot\keyboards\InlineKeyboardList;
 use bobroid\memesRedirectorBot\models\Message;
 use Longman\TelegramBot\Commands\AdminCommand;
 use Longman\TelegramBot\Entities\ServerResponse;
@@ -74,7 +72,7 @@ class AddvotebuttonsCommand extends AdminCommand
             Request::editMessageReplyMarkup([
                 'message_id'    =>  $dbMessage->postedMessageId,
                 'chat_id'       =>  ConfigurationHelper::getChannelId(),
-                'reply_markup'  =>  new InlineKeyboardList([KeyboardHelper::getLikeButton($dbMessage->id), KeyboardHelper::getDislikeButton($dbMessage->id)])
+                'reply_markup'  =>  $dbMessage->getUsingKeyboard()
             ]);
         }
 
