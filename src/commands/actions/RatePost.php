@@ -81,9 +81,10 @@ class RatePost extends BaseAction
         $dbMessage->save();
         $dbMessage->link('votes', $usersVote);
 
-        return $this->updateCallbackQuery([
+        $this->updateCallbackQuery([
             'reply_markup'  =>  $dbMessage->getUsingKeyboard()
         ]);
+        return Request::emptyResponse();
     }
 
 }
