@@ -23,7 +23,7 @@ class KeyboardHelper
 
         return new InlineKeyboardButton([
             'text'          =>  $count ? \Yii::t('tg-posts-redirector', '{icon} {count}', ['icon' => $icon, 'count' => $count]) : $icon,
-            'callback_data' =>  json_encode(['action' => 'likePost', 'data' => ['id' => $messageId]])
+            'callback_data' =>  json_encode(['action' => 'ratePost', 'data' => ['act' => '+', 'id' => $messageId]])
         ]);
     }
 
@@ -39,7 +39,7 @@ class KeyboardHelper
 
         return new InlineKeyboardButton([
             'text'          =>  $count ? \Yii::t('tg-posts-redirector', '{icon} {count}', ['icon' => $icon, 'count' => $count]) : $icon,
-            'callback_data' =>  json_encode(['action' => 'dislikePost', 'data' => ['id' => $messageId]])
+            'callback_data' =>  json_encode(['action' => 'ratePost', 'data' => ['act' => '-', 'id' => $messageId]])
         ]);
     }
 

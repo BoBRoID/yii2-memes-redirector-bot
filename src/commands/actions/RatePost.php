@@ -10,7 +10,7 @@ namespace bobroid\memesRedirectorBot\commands\actions;
 
 use Longman\TelegramBot\Entities\ServerResponse;
 
-class LikePost extends BaseAction
+class RatePost extends BaseAction
 {
 
     /**

@@ -3,8 +3,6 @@
 namespace Longman\TelegramBot\Commands\AdminCommands;
 
 use bobroid\memesRedirectorBot\helpers\ConfigurationHelper;
-use bobroid\memesRedirectorBot\helpers\KeyboardHelper;
-use bobroid\memesRedirectorBot\keyboards\InlineKeyboardList;
 use bobroid\memesRedirectorBot\models\Message;
 use Longman\TelegramBot\Commands\AdminCommand;
 use Longman\TelegramBot\Entities\ServerResponse;
