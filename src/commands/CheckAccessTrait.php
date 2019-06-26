@@ -38,6 +38,11 @@ trait CheckAccessTrait
      */
     public function preExecute(): ServerResponse
     {
+        \Yii::debug($this->getUpdate());
+        \Yii::debug($this->getUpdate()->getCallbackQuery());
+        \Yii::debug((($this->getUpdate() && $this->getUpdate()->getCallbackQuery()) === false));
+
+
         if (($this->getUpdate() && $this->getUpdate()->getCallbackQuery()) === false) {
             $chatId = $this->getChatId();
 
