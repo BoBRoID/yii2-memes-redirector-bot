@@ -4,6 +4,7 @@ namespace bobroid\memesRedirectorBot\models;
 
 use bobroid\memesRedirectorBot\helpers\KeyboardHelper;
 use bobroid\memesRedirectorBot\keyboards\InlineKeyboardList;
+use Longman\TelegramBot\Entities\InlineKeyboard;
 use Longman\TelegramBot\Exception\TelegramException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -189,10 +190,10 @@ class Message extends ActiveRecord
     }
 
     /**
-     * @return InlineKeyboardList
+     * @return InlineKeyboard
      * @throws TelegramException
      */
-    public function getUsingKeyboard(): ?InlineKeyboardList
+    public function getUsingKeyboard(): ?InlineKeyboard
     {
         if (!$this->useKeyboardId) {
             return null;
@@ -208,6 +209,6 @@ class Message extends ActiveRecord
                 break;
         }
 
-        return new InlineKeyboardList($keyboardButtons);
+        return new InlineKeyboard($keyboardButtons);
     }
 }
