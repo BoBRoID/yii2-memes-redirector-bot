@@ -9,10 +9,8 @@
 namespace bobroid\memesRedirectorBot\commands\actions;
 
 use bobroid\memesRedirectorBot\models\Message;
+use bobroid\memesRedirectorBot\models\MessageVote;
 use Longman\TelegramBot\Entities\ServerResponse;
-
-const   ACTION_INCREASE = '+',
-        ACTION_DECREASE = '-';
 
 class RatePost extends BaseAction
 {
@@ -38,20 +36,50 @@ class RatePost extends BaseAction
         $userId = $this->update->getCallbackQuery()->getFrom()->getId();
         $currentUsersVote = $dbMessage->getVotes()->andWhere(['userId' => $userId])->one();
 
-        \Yii::debug($userId);
-        \Yii::debug($currentUsersVote);
+        /**
+         * @var MessageVote|null $currentUsersVote
+         */
 
         switch ($this->queryData->act) {
-            case ACTION_INCREASE:
+            case MessageVote::VOTE_TYPE_INCREASE:
+                if ($currentUsersVote) {
+                    if ($currentUsersVote->voteType === MessageVote::VOTE_TYPE_INCREASE) {
+                        return;
+                    }
+
+                    $currentUsersVote->delete();
+                    $dbMessage->dislikesCount--;
+                }
+
+                $dbMessage->likesCount++;
                 break;
-            case ACTION_DECREASE:
+            case MessageVote::VOTE_TYPE_DECREASE:
+                if ($currentUsersVote) {
+                    if ($currentUsersVote->voteType === MessageVote::VOTE_TYPE_DECREASE) {
+                        return;
+                    }
+
+                    $currentUsersVote->delete();
+                    $dbMessage->likesCount--;
+                }
+
+                $dbMessage->dislikesCount++;
                 break;
         }
 
-        return $this->answerCallbackQuery([
+
+        $usersVote = new MessageVote([
+            'userId'    =>  $userId,
+            'messageId' =>  $dbMessage->id,
+            'voteType'  =>  $this->queryData->act
+        ]);
+
+        $dbMessage->save();
+        $dbMessage->link('votes', $usersVote);
+
+        return $this->updateCallbackQuery([
             'chat_id'       =>  $this->update->getCallbackQuery()->getMessage()->getChat()->getId(),
-            'text'          =>  \Yii::t('tg-posts-redirector', 'Понял принял'),
-            //'reply_markup'  =>  $this->getReplyMarkup()
+            'reply_markup'  =>  $dbMessage->getUsingKeyboard()
         ]);
     }
 
