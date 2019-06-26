@@ -11,23 +11,23 @@ use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Request;
 
-class AddlikebuttonCommand extends AdminCommand
+class AddvotebuttonsCommand extends AdminCommand
 {
 
     /**
      * @var string
      */
-    protected $name = 'addLikeButton';
+    protected $name = 'addVoteButtons';
 
     /**
      * @var string
      */
-    protected $description = 'Добавить кнопку "лайк"';
+    protected $description = 'Добавить кнопки "лайк" и "дизлайк"';
 
     /**
      * @var string
      */
-    protected $usage = '/addLikeButton';
+    protected $usage = '/addVoteButtons';
 
     /**
      * @var string
@@ -67,20 +67,20 @@ class AddlikebuttonCommand extends AdminCommand
         }
 
 
-        $dbMessage->useKeyboardId = $dbMessage::KEYBOARD_ID_LIKE;
+        $dbMessage->useKeyboardId = $dbMessage::KEYBOARD_ID_DISLIKE;
         $dbMessage->save(false);
 
         if ($dbMessage->isSent) {
             Request::editMessageReplyMarkup([
                 'message_id'    =>  $dbMessage->postedMessageId,
                 'chat_id'       =>  ConfigurationHelper::getChannelId(),
-                'reply_markup'  =>  new InlineKeyboardList([KeyboardHelper::getLikeButton($dbMessage->id)])
+                'reply_markup'  =>  new InlineKeyboardList([KeyboardHelper::getLikeButton($dbMessage->id), KeyboardHelper::getDislikeButton($dbMessage->id)])
             ]);
         }
 
         return Request::sendMessage([
             'chat_id'       =>  $chat_id,
-            'text'          =>  \Yii::t('tg-posts-redirector', 'Посту успешно добавлена кнопка "лайк"!')
+            'text'          =>  \Yii::t('tg-posts-redirector', 'Посту успешно добавлены кнопки голосования!')
         ]);
     }
 

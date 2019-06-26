@@ -13,16 +13,15 @@
         "ext-json": "*",
         "yiisoft/yii2": "~2.0.14",
         "longman/telegram-bot": "0.54.0",
-        "php-curl-class/php-curl-class": "8.3.2"
-    },
-    "config": {
-        "process-timeout": 1800,
-        "fxp-asset": {
-            "enabled": false
-        }
+        "php-curl-class/php-curl-class": "^8.3.2",
+        "spatie/emoji": "^1.0"
     },
     "extra": {
-        "bootstrap": "bobroid\\memesRedirectorBot\\Bootstrap"
+        "bootstrap": "bobroid\\memesRedirectorBot\\Bootstrap",
+        "asset-installer-paths": {
+            "npm-asset-library": "vendor/npm",
+            "bower-asset-library": "vendor/bower"
+        }
     },
     "autoload": {
         "psr-4": {
