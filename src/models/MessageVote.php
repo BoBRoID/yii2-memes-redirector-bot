@@ -50,7 +50,7 @@ class MessageVote extends ActiveRecord
      */
     public function getMessage(): ActiveQuery
     {
-        return $this->hasOne(Message::class, ['messageId' => 'id'])->inverseOf('votes');
+        return $this->hasOne(Message::class, ['id' => 'messageId'])->inverseOf('votes');
     }
 
 }

@@ -99,7 +99,7 @@ class Message extends ActiveRecord
      */
     public function getVotes(): ActiveQuery
     {
-        return $this->hasMany(MessageVote::class, ['id' => 'messageId'])->inverseOf('message');
+        return $this->hasMany(MessageVote::class, ['messageId' => 'id'])->inverseOf('message');
     }
 
     /**
