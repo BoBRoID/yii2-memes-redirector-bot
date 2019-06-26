@@ -11,12 +11,16 @@ namespace bobroid\memesRedirectorBot\commands\actions;
 use bobroid\memesRedirectorBot\models\Message;
 use bobroid\memesRedirectorBot\models\MessageVote;
 use Longman\TelegramBot\Entities\ServerResponse;
+use Longman\TelegramBot\Request;
 
 class RatePost extends BaseAction
 {
 
     /**
      * @return ServerResponse
+     * @throws \Longman\TelegramBot\Exception\TelegramException
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function run(): ServerResponse
     {
@@ -44,7 +48,7 @@ class RatePost extends BaseAction
             case MessageVote::VOTE_TYPE_INCREASE:
                 if ($currentUsersVote) {
                     if ($currentUsersVote->voteType === MessageVote::VOTE_TYPE_INCREASE) {
-                        return;
+                        return Request::emptyResponse();
                     }
 
                     $currentUsersVote->delete();
@@ -56,7 +60,7 @@ class RatePost extends BaseAction
             case MessageVote::VOTE_TYPE_DECREASE:
                 if ($currentUsersVote) {
                     if ($currentUsersVote->voteType === MessageVote::VOTE_TYPE_DECREASE) {
-                        return;
+                        return Request::emptyResponse();
                     }
 
                     $currentUsersVote->delete();
