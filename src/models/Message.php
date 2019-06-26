@@ -3,10 +3,10 @@
 namespace bobroid\memesRedirectorBot\models;
 
 use bobroid\memesRedirectorBot\helpers\KeyboardHelper;
-use bobroid\memesRedirectorBot\keyboards\InlineKeyboardList;
 use Longman\TelegramBot\Entities\InlineKeyboard;
 use Longman\TelegramBot\Exception\TelegramException;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -92,6 +92,14 @@ class Message extends ActiveRecord
             'audioFileId' => 'Audio File ID',
             'messageId' => 'Message ID',
         ];
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getVotes(): ActiveQuery
+    {
+        return $this->hasMany(MessageVote::class, ['id' => 'messageId'])->inverseOf('message');
     }
 
     /**

@@ -4,11 +4,10 @@
 namespace bobroid\memesRedirectorBot\helpers;
 
 
+use bobroid\memesRedirectorBot\models\MessageVote;
 use Longman\TelegramBot\Entities\InlineKeyboardButton;
 use Longman\TelegramBot\Exception\TelegramException;
 use Spatie\Emoji\Emoji;
-
-use const bobroid\memesRedirectorBot\commands\actions\{ACTION_INCREASE, ACTION_DECREASE};
 
 class KeyboardHelper
 {
@@ -25,7 +24,7 @@ class KeyboardHelper
 
         return new InlineKeyboardButton([
             'text'          =>  $count ? \Yii::t('tg-posts-redirector', '{icon} {count}', ['icon' => $icon, 'count' => $count]) : $icon,
-            'callback_data' =>  json_encode(['action' => 'ratePost', 'data' => ['act' => ACTION_INCREASE, 'id' => $messageId]])
+            'callback_data' =>  json_encode(['action' => 'ratePost', 'data' => ['act' => MessageVote::VOTE_TYPE_INCREASE, 'id' => $messageId]])
         ]);
     }
 
@@ -41,7 +40,7 @@ class KeyboardHelper
 
         return new InlineKeyboardButton([
             'text'          =>  $count ? \Yii::t('tg-posts-redirector', '{icon} {count}', ['icon' => $icon, 'count' => $count]) : $icon,
-            'callback_data' =>  json_encode(['action' => 'ratePost', 'data' => ['act' => ACTION_DECREASE, 'id' => $messageId]])
+            'callback_data' =>  json_encode(['action' => 'ratePost', 'data' => ['act' => MessageVote::VOTE_TYPE_DECREASE, 'id' => $messageId]])
         ]);
     }
 
