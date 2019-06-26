@@ -27,9 +27,7 @@ trait CheckAccessTrait
             if ($editedMessage = $update->getEditedMessage()) {
                 $chatId = $editedMessage->getChat()->getId();
             } else if ($callbackQuery = $update->getCallbackQuery()) {
-                \Yii::debug($callbackQuery);
-
-                $chatId = $callbackQuery->getChat()->getId();
+                $chatId = $callbackQuery->getMessage()->getChat()->getId();
             }
         } else if ($message = $this->getMessage()) {
             $message->getChat()->getId();
