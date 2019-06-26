@@ -92,13 +92,13 @@ abstract class BaseAction
      *
      * @todo: подебажить. Возможно можно отправить несколько Request'ов на edit
      */
-    protected function updateCallbackQuery($data)
+    protected function updateCallbackQuery($data): ServerResponse
     {
         if(!is_array($data)){
             $data = ['text' => $data];
         }
 
-        $callback_query    = $this->update->getCallbackQuery();
+        $callback_query = $this->update->getCallbackQuery();
 
         $coordinates = [
             'chat_id'   =>  $callback_query->getMessage()->getChat()->getId(),
@@ -108,16 +108,16 @@ abstract class BaseAction
         $data = array_merge($data, $coordinates);
 
         if(array_key_exists('caption', $data)){
-            \Yii::trace('editMessageCaption');
+            \Yii::debug('editMessageCaption');
             return Request::editMessageCaption($data);
         }
 
         if(array_key_exists('reply_markup', $data) && !array_key_exists('text', $data)){
-            \Yii::trace('editMessageReplyMarkup');
+            \Yii::debug('editMessageReplyMarkup');
             return Request::editMessageReplyMarkup($data);
         }
 
-        \Yii::trace('editMessageText');
+        \Yii::debug('editMessageText');
         return Request::editMessageText($data);
     }
 
