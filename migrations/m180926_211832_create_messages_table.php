@@ -13,7 +13,7 @@ class m180926_211832_create_messages_table extends Migration
     public function safeUp()
     {
         $this->createTable('messages', [
-            'id'                =>  $this->primaryKey(),
+            'id'                =>  $this->primaryKey()->unsigned(),
             'created'           =>  $this->integer()->unsigned()->notNull(),
             'isSent'            =>  $this->boolean()->unsigned()->defaultValue(0),
             'messageId'         =>  $this->integer(),
