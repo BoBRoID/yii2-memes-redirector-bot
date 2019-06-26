@@ -23,10 +23,10 @@ trait CheckAccessTrait
     {
         $chatId = null;
 
-        if ($this->getUpdate() && $this->getUpdate()->getEditedMessage()) {
+        if ($this->getMessage()) {
+            $chatId = $this->getMessage()->getChat()->getId();
+        } else if ($this->getUpdate()) {
             $chatId = $this->getUpdate()->getEditedMessage()->getChat()->getId();
-        } else if ($message = $this->getMessage()) {
-            $message->getChat()->getId();
         }
 
         return $chatId;
@@ -38,11 +38,6 @@ trait CheckAccessTrait
      */
     public function preExecute(): ServerResponse
     {
-        \Yii::debug($this->getUpdate());
-        \Yii::debug($this->getUpdate()->getCallbackQuery());
-        \Yii::debug((($this->getUpdate() && $this->getUpdate()->getCallbackQuery()) === false));
-
-
         if (($this->getUpdate() && $this->getUpdate()->getCallbackQuery()) === false) {
             $chatId = $this->getChatId();
 
