@@ -35,7 +35,7 @@ class RatePost extends BaseAction
             ]);
         }
 
-        $userId = $this->update->getCallbackQuery()->getMessage()->getChat()->getId();
+        $userId = $this->update->getCallbackQuery()->getFrom()->getId();
         $currentUsersVote = $dbMessage->getVotes()->andWhere(['userId' => $userId])->one();
 
         \Yii::debug($userId);
