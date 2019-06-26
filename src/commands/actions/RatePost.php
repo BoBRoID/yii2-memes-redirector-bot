@@ -22,7 +22,7 @@ class RatePost extends BaseAction
             \Yii::debug($this->queryData);
         }
 
-        return $this->updateCallbackQuery([
+        return $this->answerCallbackQuery([
             'chat_id'       =>  $this->update->getCallbackQuery()->getMessage()->getChat()->getId(),
             'text'          =>  \Yii::t('tg-posts-redirector', 'testing...'),
             //'reply_markup'  =>  $this->getReplyMarkup()
