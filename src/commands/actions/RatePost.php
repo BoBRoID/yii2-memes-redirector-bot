@@ -82,7 +82,6 @@ class RatePost extends BaseAction
         $dbMessage->link('votes', $usersVote);
 
         return $this->updateCallbackQuery([
-            'chat_id'       =>  $this->update->getCallbackQuery()->getMessage()->getChat()->getId(),
             'reply_markup'  =>  $dbMessage->getUsingKeyboard()
         ]);
     }
