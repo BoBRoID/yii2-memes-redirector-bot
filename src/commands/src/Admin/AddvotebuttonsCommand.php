@@ -37,7 +37,6 @@ class AddvotebuttonsCommand extends BaseAdminCommand
      *
      * @return ServerResponse
      * @throws TelegramException
-     * @throws \yii\base\InvalidConfigException
      */
     public function execute(): ServerResponse
     {
@@ -50,7 +49,7 @@ class AddvotebuttonsCommand extends BaseAdminCommand
             return Request::sendMessage([
                 'chat_id'               =>  $chat_id,
                 'reply_to_message_id'   =>  $message->getMessageId(),
-                'text'                  =>  \Yii::t('tg-posts-redirector', 'Нужно прислать в ответе пост к которому хочешь прицепить кнопку!')
+                'text'                  =>  \Yii::t('tg-posts-redirector', 'Нужно прислать в ответе на сообщение к которому хочешь прицепить кнопки!')
             ]);
         }
 
@@ -59,7 +58,7 @@ class AddvotebuttonsCommand extends BaseAdminCommand
         if (!$dbMessage) {
             return Request::sendMessage([
                 'chat_id'               =>  $chat_id,
-                'reply_to_message_id'   =>  $message->getMessageId(),
+                'reply_to_message_id'   =>  $replyMessage->getMessageId(),
                 'text'                  =>  \Yii::t('tg-posts-redirector', 'Сообщение не найдено в базе!')
             ]);
         }
@@ -77,8 +76,8 @@ class AddvotebuttonsCommand extends BaseAdminCommand
         }
 
         return Request::sendMessage([
-            'chat_id'       =>  $chat_id,
-            'text'          =>  \Yii::t('tg-posts-redirector', 'Посту успешно добавлены кнопки голосования!')
+            'chat_id'       =>  $replyMessage->getMessageId(),
+            'text'          =>  \Yii::t('tg-posts-redirector', 'Сообщению успешно добавлены кнопки голосования!')
         ]);
     }
 

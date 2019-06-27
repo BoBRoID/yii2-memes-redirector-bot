@@ -7,8 +7,8 @@ use Yii;
 /**
  * This is the model class for table "configuration".
  *
- * @property string $name
- * @property string $value
+ * @property string name
+ * @property string value
  */
 class Configuration extends \yii\db\ActiveRecord
 {

@@ -71,13 +71,12 @@ class PinnedMessage extends ActiveRecord
         ];
     }
 
-
     /**
      * @return ActiveQuery
      */
     public function getMessage(): ActiveQuery
     {
-        return $this->hasOne(Message::class, ['id' => 'messageId'])->inverseOf('votes');
+        return $this->hasOne(Message::class, ['id' => 'messageId'])->inverseOf('pins');
     }
 
 }

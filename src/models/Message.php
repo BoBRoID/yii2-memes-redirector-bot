@@ -12,19 +12,22 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "messages".
  *
- * @property int $id
- * @property int $created
- * @property int $isSent
- * @property string $text
- * @property string $photoFileId
- * @property string $animationFileId
- * @property string $audioFileId
- * @property int $messageId
- * @property string $videoFileId
- * @property int    $likesCount
- * @property int    $dislikesCount
- * @property int    $useKeyboardId
- * @property int    $postedMessageId
+ * @property int                id
+ * @property int                created
+ * @property int                isSent
+ * @property string             text
+ * @property string             photoFileId
+ * @property string             animationFileId
+ * @property string             audioFileId
+ * @property int                messageId
+ * @property string             videoFileId
+ * @property int                likesCount
+ * @property int                dislikesCount
+ * @property int                useKeyboardId
+ * @property int                postedMessageId
+ *
+ * @property MessageVote[]      votes
+ * @property PinnedMessage[]    pins
  */
 class Message extends ActiveRecord
 {
@@ -100,6 +103,14 @@ class Message extends ActiveRecord
     public function getVotes(): ActiveQuery
     {
         return $this->hasMany(MessageVote::class, ['messageId' => 'id'])->inverseOf('message');
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getPins(): ActiveQuery
+    {
+        return $this->hasMany(PinnedMessage::class, ['messageId' => 'id'])->inverseOf('message');
     }
 
     /**

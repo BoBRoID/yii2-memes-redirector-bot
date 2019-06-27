@@ -37,7 +37,6 @@ class AddlikebuttonCommand extends BaseAdminCommand
      *
      * @return ServerResponse
      * @throws TelegramException
-     * @throws \yii\base\InvalidConfigException
      */
     public function execute(): ServerResponse
     {
@@ -50,7 +49,7 @@ class AddlikebuttonCommand extends BaseAdminCommand
             return Request::sendMessage([
                 'chat_id'               =>  $chat_id,
                 'reply_to_message_id'   =>  $message->getMessageId(),
-                'text'                  =>  \Yii::t('tg-posts-redirector', 'Нужно прислать в ответе пост к которому хочешь прицепить кнопку!')
+                'text'                  =>  \Yii::t('tg-posts-redirector', 'Нужно прислать в ответе на сообщение к которому хочешь прицепить кнопку!')
             ]);
         }
 
@@ -58,7 +57,7 @@ class AddlikebuttonCommand extends BaseAdminCommand
 
         if (!$dbMessage) {
             return Request::sendMessage([
-                'chat_id'               =>  $chat_id,
+                'chat_id'               =>  $replyMessage->getMessageId(),
                 'reply_to_message_id'   =>  $message->getMessageId(),
                 'text'                  =>  \Yii::t('tg-posts-redirector', 'Сообщение не найдено в базе!')
             ]);
@@ -77,7 +76,7 @@ class AddlikebuttonCommand extends BaseAdminCommand
         }
 
         return Request::sendMessage([
-            'chat_id'       =>  $chat_id,
+            'chat_id'       =>  $replyMessage->getMessageId(),
             'text'          =>  \Yii::t('tg-posts-redirector', 'Посту успешно добавлена кнопка "лайк"!')
         ]);
     }
