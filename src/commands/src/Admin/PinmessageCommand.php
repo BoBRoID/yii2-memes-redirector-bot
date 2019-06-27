@@ -21,7 +21,7 @@ class PinmessageCommand extends BaseAdminCommand
     /**
      * @var string
      */
-    protected $description = 'Закрепить сообщение в канале. Дата должна быть в формате Y-m-d H:i! (например 01-12-2012 12:34)';
+    protected $description = 'Закрепить сообщение в канале. Дата должна быть в формате Y-m-d H:i! (например 2012-12-21 12:34)';
 
     /**
      * @var string
@@ -76,7 +76,7 @@ class PinmessageCommand extends BaseAdminCommand
             return Request::sendMessage([
                 'chat_id'               =>  $chat_id,
                 'reply_to_message_id'   =>  $message->getMessageId(),
-                'text'                  =>  \Yii::t('tg-posts-redirector', 'Похоже на то что вы забыли указать дату и время! Укажите дату и время в формате 01-12-2012 12:34')
+                'text'                  =>  \Yii::t('tg-posts-redirector', 'Похоже на то что вы забыли указать дату и время! Укажите дату и время в формате Y-m-d H:i (2012-12-21 12:34)!')
             ]);
         }
 
@@ -87,7 +87,7 @@ class PinmessageCommand extends BaseAdminCommand
                 return Request::sendMessage([
                     'chat_id'               =>  $chat_id,
                     'reply_to_message_id'   =>  $message->getMessageId(),
-                    'text'                  =>  \Yii::t('tg-posts-redirector', 'Значение `{value}` не является допустимой датой!', ['value' => $date])
+                    'text'                  =>  \Yii::t('tg-posts-redirector', 'Значение `{value}` не является допустимой датой в формате Y-m-d H:i (2012-12-21 12:34)!', ['value' => $date])
                 ]);
             }
         }
