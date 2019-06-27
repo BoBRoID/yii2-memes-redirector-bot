@@ -26,7 +26,7 @@ class PinmessageCommand extends BaseAdminCommand
     /**
      * @var string
      */
-    protected $usage = '/pinMessage';
+    protected $usage = '/pinMessage <дата окончания закрепления сообщения>|<дата начала закрепления сообщения>+<1 если хочешь чтобы пост был удалён после снятия>';
 
     /**
      * @var string
@@ -65,12 +65,14 @@ class PinmessageCommand extends BaseAdminCommand
         }
 
         $messageText = $message->getText(true);
-        $params = explode(' ', $messageText);
 
-        \Yii::debug($messageText);
-        \Yii::debug($params);
+        // так надо, ибо $deleteAfterUnpin можно не передавать
+        @([$dates, $deleteAfterUnpin] = explode('+', $messageText));
 
-        if (empty($params)) {
+        $dates = explode('|', $dates);
+        $deleteAfterUnpin = (bool)$deleteAfterUnpin;
+
+        if (empty($dates)) {
             return Request::sendMessage([
                 'chat_id'               =>  $chat_id,
                 'reply_to_message_id'   =>  $message->getMessageId(),
@@ -80,7 +82,7 @@ class PinmessageCommand extends BaseAdminCommand
 
         $validator = new DateValidator();
 
-        foreach ($params as $date) {
+        foreach ($dates as $date) {
             if ($validator->validate($date) === false) {
                 return Request::sendMessage([
                     'chat_id'               =>  $chat_id,
