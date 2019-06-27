@@ -40,7 +40,7 @@ class PinnedMessage extends ActiveRecord
 
         return self::find()->andWhere([
             'and',
-            ['<=', 'pinFrom', $date],
+            ['or', ['<=', 'pinFrom', $date], ['pinFrom' => null]],
             ['>=', 'pinTo', $date],
             ['isDeleted' => 0],
             ['pinnedAt' => null]

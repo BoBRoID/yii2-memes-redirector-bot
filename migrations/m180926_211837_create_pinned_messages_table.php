@@ -18,7 +18,7 @@ class m180926_211837_create_pinned_messages_table extends Migration
             'addedAt'           =>  $this->integer()->unsigned()->notNull(),
             'pinnedAt'          =>  $this->integer()->unsigned()->null(),
             'unpinnedAt'        =>  $this->integer()->unsigned()->null(),
-            'pinFrom'           =>  $this->dateTime()->notNull(),
+            'pinFrom'           =>  $this->dateTime()->null(),
             'pinTo'             =>  $this->dateTime()->notNull(),
             'isDeleted'         =>  $this->boolean()->unsigned()->notNull()->defaultValue(0),
             'removeAfterUnpin'  =>  $this->boolean()->unsigned()->notNull()->defaultValue(0),
