@@ -1,8 +1,7 @@
 <?php
 
 
-namespace bobroid\memesRedirectorBot\commands\src\Admin;
-
+namespace Longman\TelegramBot\Commands\AdminCommands;
 
 use bobroid\memesRedirectorBot\commands\BaseAdminCommand;
 use bobroid\memesRedirectorBot\models\Message;
