@@ -114,13 +114,7 @@ class PinmessageCommand extends BaseAdminCommand
             $messageParts[] = \Yii::t('tg-posts-redirector', 'и после этого будет удалено');
         }
 
-        if (!$dbMessage->link('pins', $pinnedMessage)) {
-            return Request::sendMessage([
-                'chat_id'               =>  $chat_id,
-                'reply_to_message_id'   =>  $message->getMessageId(),
-                'text'                  =>  \Yii::t('tg-posts-redirector', 'Произошла какая-то ошибка при попытке закрепить пост!')
-            ]);
-        }
+        $dbMessage->link('pins', $pinnedMessage);
 
         return Request::sendMessage([
             'chat_id'               =>  $chat_id,
