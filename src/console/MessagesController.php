@@ -87,12 +87,7 @@ class MessagesController extends Controller
 
     public function actionPin()
     {
-        $date = date('Y-m-d H:i:s');
-
-        $pinnedMessage = PinnedMessage::find()
-            ->andWhere(['and', ['>=', 'pinnedFrom', $date], ['<=', 'pinnedTo', $date], ['isDeleted' => 0], ['pinnedAt' => null]])
-            ->with('message')
-            ->one();
+        $pinnedMessage = PinnedMessage::findAvailable()->one();
 
         if (empty($pinnedMessage)) {
             return;
@@ -110,7 +105,24 @@ class MessagesController extends Controller
 
         if ($messageIsPinned) {
             $pinnedMessage->pinnedAt = time();
-            $pinnedMessage->save(false);
+
+            if ($pinnedMessage->save(false)) {
+                $notUnpinnedMessages = PinnedMessage::findNotUnpinned()->with(['message'])->all();
+
+                if (!empty($notUnpinnedMessages)) {
+                    foreach ($notUnpinnedMessages as $notUnpinnedMessage) {
+                        /**
+                         * @var PinnedMessage $notUnpinnedMessage
+                         */
+
+                        $notUnpinnedMessage->unpinnedAt = time();
+
+                        if ($notUnpinnedMessage->save(false) && $notUnpinnedMessage->removeAfterUnpin) {
+                            TelegramHelper::deleteMessage(['chat_id' => $chatId, 'message_id' => $notUnpinnedMessage->message->postedMessageId]);
+                        }
+                    }
+                }
+            }
         }
 
         return;
@@ -120,15 +132,25 @@ class MessagesController extends Controller
     {
         $date = date('Y-m-d H:i:s');
 
-        $pinnedMessage = PinnedMessage::find()
-            ->andWhere(['>=', 'pinnedTo'])
-            ->andWhere(['and', ['>=', 'pinnedFrom', $date], ['<=', 'pinnedTo', $date], ['isDeleted' => 0], ['pinnedAt' => null]])
-            ->with('message')
-            ->one();
+        $pinnedMessage = PinnedMessage::findNotUnpinned()->where(['<=', 'pinTo', $date])->one();
 
         if (empty($pinnedMessage)) {
             return;
         }
 
+        /**
+         * @var $pinnedMessage PinnedMessage
+         */
+
+        $chatId = ConfigurationHelper::getChannelId();
+        $messageIsUnpinned = TelegramHelper::unpinChatMessage(['chat_id' => $chatId]);
+
+        if ($messageIsUnpinned) {
+            $pinnedMessage->unpinnedAt = time();
+
+            if ($pinnedMessage->save(false) && $pinnedMessage->removeAfterUnpin) {
+                TelegramHelper::deleteMessage(['chat_id' => $chatId, 'message_id' => $pinnedMessage->message->postedMessageId]);
+            }
+        }
     }
 }

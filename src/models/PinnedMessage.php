@@ -16,8 +16,8 @@ use yii\db\ActiveRecord;
  * @property int        messageId
  * @property int        pinnedAt
  * @property int        unpinnedAt
- * @property string     pinnedFrom
- * @property string     pinnedTo
+ * @property string     pinFrom
+ * @property string     pinTo
  * @property boolean    isDeleted
  * @property boolean    removeAfterUnpin
  *
@@ -34,6 +34,27 @@ class PinnedMessage extends ActiveRecord
         return 'pinnedMessages';
     }
 
+    public static function findAvailable(): ActiveQuery
+    {
+        $date = date('Y-m-d H:i:s');
+
+        return self::find()->andWhere([
+            'and',
+            ['>=', 'pinFrom', $date],
+            ['<=', 'pinTo', $date],
+            ['isDeleted' => 0],
+            ['pinnedAt' => null]
+        ]);
+    }
+
+    public static function findNotUnpinned(): ActiveQuery
+    {
+        return self::find()->andWhere([
+            'and',
+            ['!=', 'pinnedAt', null],
+            ['unpinnedAt' => null]
+        ]);
+    }
 
     /**
      * @return array
