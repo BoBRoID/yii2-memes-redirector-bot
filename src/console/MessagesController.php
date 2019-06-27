@@ -12,11 +12,22 @@ use bobroid\memesRedirectorBot\helpers\ConfigurationHelper;
 use bobroid\memesRedirectorBot\helpers\DateTimeHelper;
 use bobroid\memesRedirectorBot\helpers\TelegramHelper;
 use bobroid\memesRedirectorBot\models\Message;
+use bobroid\memesRedirectorBot\models\PinnedMessage;
 use Longman\TelegramBot\Exception\TelegramException;
 use yii\console\Controller;
 
 class MessagesController extends Controller
 {
+
+    /**
+     * @throws TelegramException
+     */
+    public function actionRun()
+    {
+        $this->actionSend();
+        $this->actionUnpin();
+        $this->actionPin();
+    }
 
     /**
      * @throws TelegramException
@@ -72,5 +83,52 @@ class MessagesController extends Controller
         }
 
         return;
+    }
+
+    public function actionPin()
+    {
+        $date = date('Y-m-d H:i:s');
+
+        $pinnedMessage = PinnedMessage::find()
+            ->andWhere(['and', ['>=', 'pinnedFrom', $date], ['<=', 'pinnedTo', $date], ['isDeleted' => 0], ['pinnedAt' => null]])
+            ->with('message')
+            ->one();
+
+        if (empty($pinnedMessage)) {
+            return;
+        }
+
+        /**
+         * @var $pinnedMessage PinnedMessage
+         */
+
+        $chatId = ConfigurationHelper::getChannelId();
+        $messageIsPinned = TelegramHelper::pinChatMessage([
+            'chat_id'       =>  $chatId,
+            'message_id'    =>  $pinnedMessage->message->postedMessageId
+        ]);
+
+        if ($messageIsPinned) {
+            $pinnedMessage->pinnedAt = time();
+            $pinnedMessage->save(false);
+        }
+
+        return;
+    }
+
+    public function actionUnpin()
+    {
+        $date = date('Y-m-d H:i:s');
+
+        $pinnedMessage = PinnedMessage::find()
+            ->andWhere(['>=', 'pinnedTo'])
+            ->andWhere(['and', ['>=', 'pinnedFrom', $date], ['<=', 'pinnedTo', $date], ['isDeleted' => 0], ['pinnedAt' => null]])
+            ->with('message')
+            ->one();
+
+        if (empty($pinnedMessage)) {
+            return;
+        }
+
     }
 }

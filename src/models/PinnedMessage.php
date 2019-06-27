@@ -9,29 +9,29 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
- * Class MessageVote
+ * Class PinnedMessage
  * @package bobroid\memesRedirectorBot\models
  *
+ * @property int        id
  * @property int        messageId
- * @property int        userId
- * @property string     voteType
- * @property int        votedAt
+ * @property int        pinnedAt
+ * @property int        unpinnedAt
+ * @property string     pinnedFrom
+ * @property string     pinnedTo
+ * @property boolean    isDeleted
+ * @property boolean    removeAfterUnpin
  *
  * @property Message    message
  */
-class MessageVote extends ActiveRecord
+class PinnedMessage extends ActiveRecord
 {
-
-    public const    VOTE_TYPE_INCREASE = '+',
-                    VOTE_TYPE_DECREASE = '-';
-
 
     /**
      * @return string
      */
     public static function tableName(): string
     {
-        return 'messagesVotes';
+        return 'pinnedMessages';
     }
 
 
@@ -43,7 +43,7 @@ class MessageVote extends ActiveRecord
         return [
             'timestamp' => [
                 'class'                 =>  TimestampBehavior::class,
-                'createdAtAttribute'    =>  'votedAt',
+                'createdAtAttribute'    =>  'addedAt',
                 'updatedAtAttribute'    =>  null,
                 'value'                 =>  time()
             ],
