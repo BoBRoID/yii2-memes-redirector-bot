@@ -80,14 +80,14 @@ class PinmessageCommand extends BaseAdminCommand
             ]);
         }
 
-        $validator = new DateValidator();
+        $validator = new DateValidator(['format' => 'php:Y-m-d H:i']);
 
         foreach ($dates as $date) {
             if ($validator->validate($date) === false) {
                 return Request::sendMessage([
                     'chat_id'               =>  $chat_id,
                     'reply_to_message_id'   =>  $message->getMessageId(),
-                    'text'                  =>  \Yii::t('tg-posts-redirector', 'Значение {value} не является допустимой датой!', ['value' => $date])
+                    'text'                  =>  \Yii::t('tg-posts-redirector', 'Значение `{value}` не является допустимой датой!', ['value' => $date])
                 ]);
             }
         }
