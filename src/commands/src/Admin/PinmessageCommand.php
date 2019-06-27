@@ -5,6 +5,7 @@ namespace Longman\TelegramBot\Commands\AdminCommands;
 
 use bobroid\memesRedirectorBot\commands\BaseAdminCommand;
 use bobroid\memesRedirectorBot\models\Message;
+use bobroid\memesRedirectorBot\models\PinnedMessage;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Request;
@@ -38,6 +39,7 @@ class PinmessageCommand extends BaseAdminCommand
      *
      * @return ServerResponse
      * @throws TelegramException
+     * @throws \yii\base\InvalidConfigException
      */
     public function execute(): ServerResponse
     {
@@ -92,8 +94,31 @@ class PinmessageCommand extends BaseAdminCommand
             }
         }
 
+        $pinnedMessage = new PinnedMessage([
+            'pinFrom'           =>  $dates[1] ?? null,
+            'pinTo'             =>  $dates[0],
+            'removeAfterUnpin'  =>  $deleteAfterUnpin
+        ]);
 
+        $messageParts = [\Yii::t('tg-posts-redirector', 'Сообщение успешно закреплено')];
 
+        if ($pinnedMessage->pinFrom) {
+            $messageParts[] = \Yii::t('tg-posts-redirector', 'с {dateFrom}', ['dateFrom' => \Yii::$app->formatter->asDatetime($pinnedMessage->pinFrom)]);
+        }
+
+        if ($pinnedMessage->pinTo) {
+            $messageParts[] = \Yii::t('tg-posts-redirector', 'до {dateTo}', ['dateTo' => \Yii::$app->formatter->asDatetime($pinnedMessage->pinTo)]);
+        }
+
+        if ($pinnedMessage->removeAfterUnpin) {
+            $messageParts[] = \Yii::t('tg-posts-redirector', 'и после этого будет удалено');
+        }
+
+        return Request::sendMessage([
+            'chat_id'               =>  $chat_id,
+            'reply_to_message_id'   =>  $message->getMessageId(),
+            'text'                  =>  implode(' ', $messageParts)
+        ]);
     }
 
 }
