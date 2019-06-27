@@ -38,11 +38,7 @@ class TelegramHelper
      */
     public static function pinChatMessage(array $data): bool
     {
-        $res = self::sendRequest('pinChatMessage', $data);
-
-        var_dump($res);
-
-        return $res !== null;
+        return self::sendRequest('pinChatMessage', $data) !== null;
     }
 
     /**

@@ -2,14 +2,14 @@
 
 namespace Longman\TelegramBot\Commands\AdminCommands;
 
+use bobroid\memesRedirectorBot\commands\BaseAdminCommand;
 use bobroid\memesRedirectorBot\helpers\ConfigurationHelper;
 use bobroid\memesRedirectorBot\models\Message;
-use Longman\TelegramBot\Commands\AdminCommand;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Request;
 
-class AddlikebuttonCommand extends AdminCommand
+class AddlikebuttonCommand extends BaseAdminCommand
 {
 
     /**

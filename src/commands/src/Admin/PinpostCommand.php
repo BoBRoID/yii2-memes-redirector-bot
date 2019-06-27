@@ -1,31 +1,33 @@
 <?php
 
-namespace Longman\TelegramBot\Commands\AdminCommands;
+
+namespace bobroid\memesRedirectorBot\commands\src\Admin;
+
 
 use bobroid\memesRedirectorBot\commands\BaseAdminCommand;
-use bobroid\memesRedirectorBot\helpers\ConfigurationHelper;
 use bobroid\memesRedirectorBot\models\Message;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Request;
+use yii\validators\DateValidator;
 
-class AddvotebuttonsCommand extends BaseAdminCommand
+class PinpostCommand extends BaseAdminCommand
 {
 
     /**
      * @var string
      */
-    protected $name = 'addVoteButtons';
+    protected $name = 'pinPost';
 
     /**
      * @var string
      */
-    protected $description = 'Добавить кнопки "лайк" и "дизлайк"';
+    protected $description = 'Закрепить пост в канале. Дата должна быть в формате Y-m-d H:i! (например 01-12-2012 12:34)';
 
     /**
      * @var string
      */
-    protected $usage = '/addVoteButtons';
+    protected $usage = '/pinPost <до какого времени> <с какого времени (не обязательно)>';
 
     /**
      * @var string
@@ -37,7 +39,6 @@ class AddvotebuttonsCommand extends BaseAdminCommand
      *
      * @return ServerResponse
      * @throws TelegramException
-     * @throws \yii\base\InvalidConfigException
      */
     public function execute(): ServerResponse
     {
@@ -64,22 +65,31 @@ class AddvotebuttonsCommand extends BaseAdminCommand
             ]);
         }
 
+        $messageText = $message->getText(true);
+        $params = explode(' ', $messageText);
 
-        $dbMessage->useKeyboardId = $dbMessage::KEYBOARD_ID_DISLIKE;
-        $dbMessage->save(false);
-
-        if ($dbMessage->isSent) {
-            Request::editMessageReplyMarkup([
-                'message_id'    =>  $dbMessage->postedMessageId,
-                'chat_id'       =>  ConfigurationHelper::getChannelId(),
-                'reply_markup'  =>  $dbMessage->getUsingKeyboard()
+        if (empty($params)) {
+            return Request::sendMessage([
+                'chat_id'               =>  $chat_id,
+                'reply_to_message_id'   =>  $message->getMessageId(),
+                'text'                  =>  \Yii::t('tg-posts-redirector', 'Похоже на то что вы забыли указать дату и время! Укажите дату и время в формате 01-12-2012 12:34')
             ]);
         }
 
-        return Request::sendMessage([
-            'chat_id'       =>  $chat_id,
-            'text'          =>  \Yii::t('tg-posts-redirector', 'Посту успешно добавлены кнопки голосования!')
-        ]);
+        $validator = new DateValidator();
+
+        foreach ($params as $date) {
+            if ($validator->validate($date) === false) {
+                return Request::sendMessage([
+                    'chat_id'               =>  $chat_id,
+                    'reply_to_message_id'   =>  $message->getMessageId(),
+                    'text'                  =>  \Yii::t('tg-posts-redirector', 'Значение {value} не является допустимой датой!', ['value' => $date])
+                ]);
+            }
+        }
+
+
+
     }
 
 }
