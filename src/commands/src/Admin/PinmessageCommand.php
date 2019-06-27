@@ -116,7 +116,7 @@ class PinmessageCommand extends BaseAdminCommand
 
         return Request::sendMessage([
             'chat_id'               =>  $chat_id,
-            'reply_to_message_id'   =>  $message->getMessageId(),
+            'reply_to_message_id'   =>  $replyMessage->getMessageId(),
             'text'                  =>  implode(' ', $messageParts)
         ]);
     }
