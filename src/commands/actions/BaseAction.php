@@ -71,8 +71,10 @@ abstract class BaseAction
      * @param $data
      * @return ServerResponse
      */
-    protected function answerCallbackQuery($data): ServerResponse
+    protected function answerCallbackQuery($data = null): ServerResponse
     {
+        $data = $data ?? [];
+
         if(!is_array($data)){
             $data = ['text' => $data];
         }
@@ -92,8 +94,10 @@ abstract class BaseAction
      *
      * @todo: подебажить. Возможно можно отправить несколько Request'ов на edit
      */
-    protected function updateCallbackQuery($data): ServerResponse
+    protected function updateCallbackQuery($data = null): ServerResponse
     {
+        $data = $data ?? [];
+
         if(!is_array($data)){
             $data = ['text' => $data];
         }

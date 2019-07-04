@@ -67,4 +67,13 @@ class TelegramHelper
     {
         return self::sendRequest('deleteMessage', $data) !== null;
     }
+
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public static function updateMessageMarkup(array $data): bool
+    {
+        return self::sendRequest('editMessageReplyMarkup', $data) !== null;
+    }
 }

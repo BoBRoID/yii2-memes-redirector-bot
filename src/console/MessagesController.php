@@ -27,6 +27,7 @@ class MessagesController extends Controller
         $this->actionSend();
         $this->actionUnpin();
         $this->actionPin();
+        $this->actionUpdateLikesCounters();
     }
 
     /**
@@ -151,6 +152,36 @@ class MessagesController extends Controller
             if ($pinnedMessage->save(false) && $pinnedMessage->removeAfterUnpin) {
                 TelegramHelper::deleteMessage(['chat_id' => $chatId, 'message_id' => $pinnedMessage->message->postedMessageId]);
             }
+        }
+    }
+
+    /**
+     * @throws TelegramException
+     */
+    public function actionUpdateLikesCounters()
+    {
+        $messages = Message::find()
+            ->from(['m' => Message::tableName()])
+            ->joinWith('votes v', false)
+            ->andWhere(['>=', 'v.votedAt', ConfigurationHelper::getLastLikesUpdate()])
+            ->all();
+
+        $chatId = ConfigurationHelper::getChannelId();
+
+        foreach ($messages as $message) {
+            /**
+             * @var $message Message
+             */
+
+            TelegramHelper::updateMessageMarkup([
+                'chat_id'       =>  $chatId,
+                'message_id'    =>  $message->postedMessageId,
+                'reply_markup'  =>  $message->getUsingKeyboard()
+            ]);
+        }
+
+        if (!empty($messages)) {
+            ConfigurationHelper::setLastLikesUpdate(time());
         }
     }
 }

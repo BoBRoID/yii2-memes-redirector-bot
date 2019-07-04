@@ -59,9 +59,19 @@ class ConfigurationHelper
         return (int)self::get('lastUpdate');
     }
 
+    public static function getLastLikesUpdate(): ?int
+    {
+        return (int)self::get('lastLikesUpdate');
+    }
+
     public static function setLastUpdate(int $timestamp): bool
     {
         return self::set('lastUpdate', $timestamp);
+    }
+
+    public static function setLastLikesUpdate(int $timestamp): bool
+    {
+        return self::set('lastLikesUpdate', $timestamp);
     }
 
     public static function getChannelId(): ?int

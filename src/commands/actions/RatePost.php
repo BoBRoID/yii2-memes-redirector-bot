@@ -48,8 +48,7 @@ class RatePost extends BaseAction
             case MessageVote::VOTE_TYPE_INCREASE:
                 if ($currentUsersVote) {
                     if ($currentUsersVote->voteType === MessageVote::VOTE_TYPE_INCREASE) {
-                        return $this->answerCallbackQuery([]);
-                        return Request::emptyResponse();
+                        return $this->answerCallbackQuery();
                     }
 
                     $currentUsersVote->delete();
@@ -61,8 +60,7 @@ class RatePost extends BaseAction
             case MessageVote::VOTE_TYPE_DECREASE:
                 if ($currentUsersVote) {
                     if ($currentUsersVote->voteType === MessageVote::VOTE_TYPE_DECREASE) {
-                        return $this->answerCallbackQuery([]);
-                        return Request::emptyResponse();
+                        return $this->answerCallbackQuery();
                     }
 
                     $currentUsersVote->delete();
@@ -73,7 +71,6 @@ class RatePost extends BaseAction
                 break;
         }
 
-
         $usersVote = new MessageVote([
             'userId'    =>  $userId,
             'messageId' =>  $dbMessage->id,
@@ -83,16 +80,11 @@ class RatePost extends BaseAction
         $dbMessage->save();
         $dbMessage->link('votes', $usersVote);
 
-        $this->answerCallbackQuery([
+        return $this->answerCallbackQuery([
             'text'  =>  \Yii::t('tg-posts-redirector', 'Вы {action} это', [
                 'action'    =>  $usersVote->voteType === MessageVote::VOTE_TYPE_INCREASE ? \Yii::t('tg-posts-redirector', 'лайкнули') : \Yii::t('tg-posts-redirector', 'дизлайкнули')
             ])
         ]);
-
-        $this->updateCallbackQuery([
-            'reply_markup'  =>  $dbMessage->getUsingKeyboard()
-        ]);
-        return Request::emptyResponse();
     }
 
 }
