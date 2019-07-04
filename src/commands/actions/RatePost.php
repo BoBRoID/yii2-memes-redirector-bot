@@ -81,6 +81,12 @@ class RatePost extends BaseAction
         $dbMessage->save();
         $dbMessage->link('votes', $usersVote);
 
+        $this->answerCallbackQuery([
+            'text'  =>  \Yii::t('tg-posts-redirector', 'Вы {action} это', [
+                'action'    =>  $usersVote->voteType === MessageVote::VOTE_TYPE_INCREASE ? \Yii::t('tg-posts-redirector', 'лайкнули') : \Yii::t('tg-posts-redirector', 'дизлайкнули')
+            ])
+        ]);
+
         $this->updateCallbackQuery([
             'reply_markup'  =>  $dbMessage->getUsingKeyboard()
         ]);
