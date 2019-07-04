@@ -48,6 +48,7 @@ class RatePost extends BaseAction
             case MessageVote::VOTE_TYPE_INCREASE:
                 if ($currentUsersVote) {
                     if ($currentUsersVote->voteType === MessageVote::VOTE_TYPE_INCREASE) {
+                        return $this->answerCallbackQuery([]);
                         return Request::emptyResponse();
                     }
 
@@ -60,6 +61,7 @@ class RatePost extends BaseAction
             case MessageVote::VOTE_TYPE_DECREASE:
                 if ($currentUsersVote) {
                     if ($currentUsersVote->voteType === MessageVote::VOTE_TYPE_DECREASE) {
+                        return $this->answerCallbackQuery([]);
                         return Request::emptyResponse();
                     }
 
