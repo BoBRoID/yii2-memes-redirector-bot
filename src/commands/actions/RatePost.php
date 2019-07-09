@@ -11,16 +11,15 @@ namespace bobroid\memesRedirectorBot\commands\actions;
 use bobroid\memesRedirectorBot\models\Message;
 use bobroid\memesRedirectorBot\models\MessageVote;
 use Longman\TelegramBot\Entities\ServerResponse;
-use Longman\TelegramBot\Request;
+use yii\db\StaleObjectException;
 
 class RatePost extends BaseAction
 {
 
     /**
      * @return ServerResponse
-     * @throws \Longman\TelegramBot\Exception\TelegramException
      * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws StaleObjectException
      */
     public function run(): ServerResponse
     {
