@@ -76,7 +76,7 @@ class AddvotebuttonsCommand extends BaseAdminCommand
         }
 
         return Request::sendMessage([
-            'chat_id'       =>  $replyMessage->getMessageId(),
+            'chat_id'       =>  $chat_id,
             'text'          =>  \Yii::t('tg-posts-redirector', 'Сообщению успешно добавлены кнопки голосования!')
         ]);
     }

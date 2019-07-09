@@ -57,8 +57,8 @@ class AddlikebuttonCommand extends BaseAdminCommand
 
         if (!$dbMessage) {
             return Request::sendMessage([
-                'chat_id'               =>  $replyMessage->getMessageId(),
-                'reply_to_message_id'   =>  $message->getMessageId(),
+                'chat_id'               =>  $chat_id,
+                'reply_to_message_id'   =>  $replyMessage->getMessageId(),
                 'text'                  =>  \Yii::t('tg-posts-redirector', 'Сообщение не найдено в базе!')
             ]);
         }
@@ -76,7 +76,7 @@ class AddlikebuttonCommand extends BaseAdminCommand
         }
 
         return Request::sendMessage([
-            'chat_id'       =>  $replyMessage->getMessageId(),
+            'chat_id'       =>  $chat_id,
             'text'          =>  \Yii::t('tg-posts-redirector', 'Посту успешно добавлена кнопка "лайк"!')
         ]);
     }
