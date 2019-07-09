@@ -44,16 +44,16 @@ class EdittextCommand extends BaseAdminCommand
 
         if (!$dbMessage) {
             return Request::sendMessage([
-                'chat_id'               =>  $replyMessage->getMessageId(),
-                'reply_to_message_id'   =>  $message->getMessageId(),
+                'chat_id'               =>  $chat_id,
+                'reply_to_message_id'   =>  $replyMessage->getMessageId(),
                 'text'                  =>  \Yii::t('tg-posts-redirector', 'Сообщение не найдено в базе!')
             ]);
         }
 
         if ($dbMessage->isSent) {
             return Request::sendMessage([
-                'chat_id'               =>  $replyMessage->getMessageId(),
-                'reply_to_message_id'   =>  $message->getMessageId(),
+                'chat_id'               =>  $chat_id,
+                'reply_to_message_id'   =>  $replyMessage->getMessageId(),
                 'text'                  =>  \Yii::t('tg-posts-redirector', 'Сообщение уже было отправлено!')
             ]);
         }
@@ -64,8 +64,8 @@ class EdittextCommand extends BaseAdminCommand
 
         if ($dbMessage->save() === false) {
             return Request::sendMessage([
-                'chat_id'               =>  $replyMessage->getMessageId(),
-                'reply_to_message_id'   =>  $message->getMessageId(),
+                'chat_id'               =>  $chat_id,
+                'reply_to_message_id'   =>  $replyMessage->getMessageId(),
                 'text'                  =>  \Yii::t('tg-posts-redirector', 'По каким-то одному богу ведомым причинам не удалось отредактировать сообщение!')
             ]);
         }
