@@ -79,6 +79,11 @@ class ConfigurationHelper
         return (int)self::get('channelId');
     }
 
+    public static function getDiscussionChatId(): ?int
+    {
+        return (int)self::get('discussionChatId');
+    }
+
     public static function getChangeableVars(): array
     {
         return ['delay', 'nightDelay', 'channelId'];

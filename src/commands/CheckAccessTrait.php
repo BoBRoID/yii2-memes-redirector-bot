@@ -4,7 +4,7 @@
 namespace bobroid\memesRedirectorBot\commands;
 
 
-use bobroid\memesRedirectorBot\models\Configuration;
+use bobroid\memesRedirectorBot\helpers\ConfigurationHelper;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Request;
@@ -15,6 +15,8 @@ use Longman\TelegramBot\Request;
  */
 trait CheckAccessTrait
 {
+
+    private $telegramUpdatesUserId = 777000;
 
     /**
      * @return int|null
@@ -38,10 +40,10 @@ trait CheckAccessTrait
      */
     public function preExecute(): ServerResponse
     {
-        if (($this->getUpdate() && $this->getUpdate()->getCallbackQuery()) === false) {
+        if (!($this->getUpdate() && $this->getUpdate()->getCallbackQuery())) {
             $chatId = $this->getChatId();
 
-            if (in_array($chatId, Configuration::getAdminsIDs(), true) === false) {
+            if (!in_array($chatId, ConfigurationHelper::getAdminsIDs(), true)) {
                 return Request::sendMessage([
                     'chat_id'   =>  $chatId,
                     'text'      =>  'I work just from my creator, so sorry'

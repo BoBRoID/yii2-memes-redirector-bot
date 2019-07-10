@@ -9,13 +9,15 @@
 namespace Longman\TelegramBot\Commands\SystemCommands;
 
 
-use bobroid\memesRedirectorBot\commands\BaseSystemCommand;
+use bobroid\memesRedirectorBot\helpers\ConfigurationHelper;
 use bobroid\memesRedirectorBot\helpers\MessageHelper;
+use bobroid\memesRedirectorBot\helpers\TelegramHelper;
+use Longman\TelegramBot\Commands\SystemCommand;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Request;
 
-class GenericmessageCommand extends BaseSystemCommand
+class GenericmessageCommand extends SystemCommand
 {
 
     /**
@@ -42,15 +44,29 @@ class GenericmessageCommand extends BaseSystemCommand
     public function execute(): ServerResponse
     {
         $message = $this->getMessage();
-        $chatId = $message->getChat()->getId();
+        $chat = $message->getChat();
+        $chatId = $chat->getId();
 
-        $dbMessage = MessageHelper::parseToDbMessage($message);
+        if ($chat->isPrivateChat()) {
+            if (!in_array($chatId, ConfigurationHelper::getAdminsIDs(), true)) {
+                return Request::sendMessage([
+                    'chat_id'   =>  $chatId,
+                    'text'      =>  'I work just from my creator, so sorry'
+                ]);
+            }
 
-        if ($dbMessage->save() === false) {
-            return Request::sendMessage([
-                'chat_id'   =>  $chatId,
-                'text'      =>  'Пацан к успеху шёл, но не получилось, не фартонуло :('
-            ]);
+            $dbMessage = MessageHelper::parseToDbMessage($message);
+
+            if ($dbMessage->save() === false) {
+                return Request::sendMessage([
+                    'chat_id'   =>  $chatId,
+                    'text'      =>  'Пацан к успеху шёл, но не получилось, не фартонуло :('
+                ]);
+            }
+        }
+
+        if ($message->getForwardFromChat() && $message->getForwardFromChat()->getId() === ConfigurationHelper::getChannelId()) {
+            TelegramHelper::deleteMessage(['chat_id' => $chatId, 'message_id' => $message->getMessageId()]);
         }
 
         return Request::emptyResponse();

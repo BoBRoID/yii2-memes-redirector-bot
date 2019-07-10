@@ -8,7 +8,7 @@
 
 namespace bobroid\memesRedirectorBot\actions;
 
-use bobroid\memesRedirectorBot\models\Configuration;
+use bobroid\memesRedirectorBot\helpers\ConfigurationHelper;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Telegram;
 use yii\base\Action;
@@ -21,7 +21,7 @@ class GetWebHookAction extends Action
             $telegram = new Telegram(\Yii::$app->params['apiKey'], \Yii::$app->params['botName']);
 
             $telegram->addCommandsPath(\Yii::getAlias('@vendor/bobroid/yii2-memes-redirector-bot/src/commands/src'));
-            $telegram->enableAdmins(Configuration::getAdminsIDs());
+            $telegram->enableAdmins(ConfigurationHelper::getAdminsIDs());
             $telegram->handle();
         }catch (TelegramException $e){
             \Yii::error($e->getMessage());
