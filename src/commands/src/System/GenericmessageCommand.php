@@ -35,6 +35,8 @@ class GenericmessageCommand extends SystemCommand
      */
     protected $version = '1.0';
 
+    private $telegramUpdatesUserId = 777000;
+
     /**
      * Execution if MySQL is required but not available
      *
@@ -65,7 +67,7 @@ class GenericmessageCommand extends SystemCommand
             }
         }
 
-        if ($message->getForwardFromChat() && $message->getForwardFromChat()->getId() === ConfigurationHelper::getChannelId()) {
+        if ($message->getFrom()->getId() === $this->telegramUpdatesUserId) {
             TelegramHelper::deleteMessage(['chat_id' => $chatId, 'message_id' => $message->getMessageId()]);
         }
 

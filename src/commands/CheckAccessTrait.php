@@ -16,8 +16,6 @@ use Longman\TelegramBot\Request;
 trait CheckAccessTrait
 {
 
-    private $telegramUpdatesUserId = 777000;
-
     /**
      * @return int|null
      */
