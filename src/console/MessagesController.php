@@ -209,7 +209,13 @@ class MessagesController extends Controller
             /**
              * @var $message Message
              */
-            $message->viewsCount = TelegramHelper::getMessageViews($message->postedMessageId);
+            $viewsCount = TelegramHelper::getMessageViews($message->postedMessageId);
+
+            if ($viewsCount === null) {
+                continue;
+            }
+
+            $message->viewsCount = $viewsCount;
             $message->save(false);
         }
 
