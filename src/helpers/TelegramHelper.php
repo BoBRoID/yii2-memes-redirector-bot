@@ -89,7 +89,7 @@ class TelegramHelper
             return null;
         }
 
-        $pageContent = file_get_contents("{$link}/{$messageId}");
+        $pageContent = file_get_contents("{$link}/{$messageId}?embed=1");
 
         var_dump($pageContent);
 
