@@ -25,6 +25,8 @@ use yii\db\ActiveRecord;
  * @property int                dislikesCount
  * @property int                useKeyboardId
  * @property int                postedMessageId
+ * @property int                viewsCount
+ * @property int                hasBeenSentAt
  *
  * @property MessageVote[]      votes
  * @property PinnedMessage[]    pins
@@ -75,7 +77,7 @@ class Message extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['created', 'isSent', 'messageId', 'likesCount', 'dislikesCount', 'useKeyboardId', 'postedMessageId'], 'integer'],
+            [['created', 'isSent', 'messageId', 'likesCount', 'dislikesCount', 'useKeyboardId', 'postedMessageId', 'viewsCount', 'hasBeenSentAt'], 'integer'],
             [['text', 'photoFileId', 'animationFileId', 'audioFileId', 'videoFileId'], 'string'],
         ];
     }

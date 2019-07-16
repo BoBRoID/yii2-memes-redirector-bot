@@ -5,13 +5,18 @@ namespace bobroid\memesRedirectorBot\commands;
 
 
 use bobroid\memesRedirectorBot\helpers\ConfigurationHelper;
+use Longman\TelegramBot\Entities\Message;
 use Longman\TelegramBot\Entities\ServerResponse;
+use Longman\TelegramBot\Entities\Update;
 use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Request;
 
 /**
  * Trait CheckAccessTrait
  * @package bobroid\memesRedirectorBot\commands
+ *
+ * @method Message getMessage
+ * @method Update getUpdate
  */
 trait CheckAccessTrait
 {
@@ -40,6 +45,10 @@ trait CheckAccessTrait
     {
         if (!($this->getUpdate() && $this->getUpdate()->getCallbackQuery())) {
             $chatId = $this->getChatId();
+
+            if ($this->getMessage()->getChat()->isPrivateChat() === false) {
+                return Request::emptyResponse();
+            }
 
             if (!in_array($chatId, ConfigurationHelper::getAdminsIDs(), true)) {
                 return Request::sendMessage([

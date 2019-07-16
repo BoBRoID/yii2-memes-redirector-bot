@@ -76,4 +76,23 @@ class TelegramHelper
     {
         return self::sendRequest('editMessageReplyMarkup', $data) !== null;
     }
+
+    /**
+     * @param int $messageId
+     * @return int|null
+     */
+    public static function getMessageViews(int $messageId): ?int
+    {
+        $link = ConfigurationHelper::get('channelLink');
+
+        if ($link === null) {
+            return null;
+        }
+
+        $pageContent = file_get_contents("{$link}/{$messageId}");
+
+        var_dump($pageContent);
+
+        return null;
+    }
 }

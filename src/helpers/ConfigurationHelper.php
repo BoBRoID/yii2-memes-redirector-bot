@@ -79,14 +79,29 @@ class ConfigurationHelper
         return (int)self::get('channelId');
     }
 
-    public static function getDiscussionChatId(): ?int
+    public static function getCheckViewsForDays(): ?int
     {
-        return (int)self::get('discussionChatId');
+        return (int)(self::get('checkViewsForDays') ?? 1);
+    }
+
+    public static function getLastViewsCheck(): ?int
+    {
+        return (int)self::get('lastViewsCheck');
+    }
+
+    public static function setLastViewsCheck(int $timestamp): bool
+    {
+        return self::set('lastViewsCheck', $timestamp);
+    }
+
+    public static function getViewsCheckerDelay(): ?int
+    {
+        return (int)(self::get('viewsCheckerDelay') ?? 60) * 60;
     }
 
     public static function getChangeableVars(): array
     {
-        return ['delay', 'nightDelay', 'channelId'];
+        return ['delay', 'nightDelay', 'channelId', 'viewsCheckerDelay', 'checkViewsForDays', 'channelLink'];
     }
 
     /**

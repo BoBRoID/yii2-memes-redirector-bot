@@ -14,6 +14,7 @@ use bobroid\memesRedirectorBot\helpers\TelegramHelper;
 use bobroid\memesRedirectorBot\models\Message;
 use bobroid\memesRedirectorBot\models\PinnedMessage;
 use Longman\TelegramBot\Exception\TelegramException;
+use Longman\TelegramBot\Telegram;
 use yii\console\Controller;
 
 class MessagesController extends Controller
@@ -28,6 +29,7 @@ class MessagesController extends Controller
         $this->actionUnpin();
         $this->actionPin();
         $this->actionUpdateLikesCounters();
+        $this->actionUpdateViewsCounters();
     }
 
     /**
@@ -182,6 +184,31 @@ class MessagesController extends Controller
 
         if (!empty($messages)) {
             ConfigurationHelper::setLastLikesUpdate(time());
+        }
+    }
+
+    public function actionUpdateViewsCounters()
+    {
+        $previouslyCheckedViewsAt = ConfigurationHelper::getLastViewsCheck();
+        $checkViewsDelay = ConfigurationHelper::getViewsCheckerDelay();
+
+        if ($previouslyCheckedViewsAt !== null && $previouslyCheckedViewsAt + $checkViewsDelay > time()) {
+            return;
+        }
+
+        $checkerDelay = ConfigurationHelper::getCheckViewsForDays();
+        $dateStart = strtotime("-{$checkerDelay} days");
+
+        $messages = Message::find()
+            ->andWhere(['>=', 'hasBeenSentAt', $dateStart])
+            ->andWhere(['isSent' => 1])
+            ->all();
+
+        foreach ($messages as $message) {
+            /**
+             * @var $message Message
+             */
+            TelegramHelper::getMessageViews($message->postedMessageId);
         }
     }
 }
