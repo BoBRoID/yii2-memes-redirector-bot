@@ -62,6 +62,7 @@ class SendnowCommand extends BaseAdminCommand
         if ($response = TelegramHelper::sendRequest($dbMessage->getTelegramMethod(), $dbMessage->getTelegramData() + ['chat_id' => ConfigurationHelper::getChannelId()])) {
             $dbMessage->isSent = 1;
             $dbMessage->postedMessageId = $response && $response->result && $response->result->message_id ? $response->result->message_id : null;
+            $dbMessage->hasBeenSentAt = time();
             $dbMessage->save();
 
             ConfigurationHelper::setLastUpdate(time());

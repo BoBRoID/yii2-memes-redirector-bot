@@ -69,6 +69,7 @@ class MessagesController extends Controller
         if ($response = TelegramHelper::sendRequest($message->getTelegramMethod(), $data)) {
             $message->isSent = 1;
             $message->postedMessageId = $response && $response->result && $response->result->message_id ? $response->result->message_id : null;
+            $message->hasBeenSentAt = time();
             $message->save();
 
             ConfigurationHelper::setLastUpdate($currentTimestamp);
@@ -208,7 +209,10 @@ class MessagesController extends Controller
             /**
              * @var $message Message
              */
-            TelegramHelper::getMessageViews($message->postedMessageId);
+            $message->viewsCount = TelegramHelper::getMessageViews($message->postedMessageId);
+            $message->save(false);
         }
+
+        ConfigurationHelper::setLastViewsCheck(time());
     }
 }

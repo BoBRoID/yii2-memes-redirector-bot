@@ -93,8 +93,10 @@ class TelegramHelper
 
         preg_match('/<span class="tgme_widget_message_views">(\w)?<\/span>/', $pageContent, $matches);
 
-        var_dump($matches);
+        if (empty($matches) || count($matches) < 2) {
+            return null;
+        }
 
-        return null;
+        return array_pop($matches);
     }
 }
