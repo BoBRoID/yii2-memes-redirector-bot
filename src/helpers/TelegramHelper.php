@@ -91,7 +91,9 @@ class TelegramHelper
 
         $pageContent = file_get_contents("{$link}/{$messageId}?embed=1");
 
-        var_dump($pageContent);
+        preg_match('/<span class="tgme_widget_message_views">(\w)?<\/span>/', $pageContent, $matches);
+
+        var_dump($matches);
 
         return null;
     }
