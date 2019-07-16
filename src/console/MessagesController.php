@@ -211,7 +211,7 @@ class MessagesController extends Controller
              */
             $viewsCount = TelegramHelper::getMessageViews($message->postedMessageId);
 
-            if ($viewsCount === null) {
+            if ($viewsCount === null || $viewsCount < $message->viewsCount) {
                 continue;
             }
 
