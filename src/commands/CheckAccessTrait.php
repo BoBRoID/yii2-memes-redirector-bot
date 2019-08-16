@@ -46,7 +46,7 @@ trait CheckAccessTrait
         if (!($this->getUpdate() && $this->getUpdate()->getCallbackQuery())) {
             $chatId = $this->getChatId();
 
-            if ($this->getMessage()->getChat()->isPrivateChat() === false) {
+            if ($this->getMessage() === null || $this->getMessage()->getChat()->isPrivateChat() === false) {
                 return Request::emptyResponse();
             }
 
